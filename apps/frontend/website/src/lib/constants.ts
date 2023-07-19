@@ -29,9 +29,6 @@ export enum ROUTES {
   EARLY_DEPOSIT_BLOG = 'https://medium.com/prepo/early-deposits-launch-bb4470bc376',
 }
 
-export const PREPO_STARKNET_MARKET_BLOG_POST: string | undefined =
-  'https://medium.com/prepo/prepo-v1-1-starknet-market-and-more-3ee433b486cb'
-
 export const MAILCHIMP_URL =
   'https://prepo.us6.list-manage.com/subscribe/post?u=b8c56831dea49f16a5f4d0518&id=111d836609'
 

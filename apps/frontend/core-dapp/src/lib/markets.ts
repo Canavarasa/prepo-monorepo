@@ -1,4 +1,4 @@
-import { PREPO_ZKSYNC_MARKET_BLOG_POST } from './constants'
+import { PREPO_STARKNET_MARKET_BLOG_POST, PREPO_ZKSYNC_MARKET_BLOG_POST } from './constants'
 import { Market } from '../types/market.types'
 
 export const arbitrum: Market = {
@@ -66,7 +66,7 @@ export const starknet: Market = {
     valuationRange: [3_000_000_000, 9_000_000_000],
   },
   version: 'v1.1',
-  settlementDocsLink: undefined, // TODO add when available
+  settlementDocsLink: PREPO_STARKNET_MARKET_BLOG_POST,
 }
 
 export const markets: Market[] = [arbitrum, zkSync, starknet]

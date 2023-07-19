@@ -12,7 +12,6 @@ import Navigation from '../Navigation'
 import isOutdated from '../../utils/isOutdated'
 import { useRegionBlocked } from '../RegionWall'
 import Link from '../Link'
-import { PREPO_STARKNET_MARKET_BLOG_POST } from '../../lib/constants'
 
 const AHeader = dynamic(() => import('antd').then(({ Layout }) => Layout.Header) as LoaderComponent)
 
@@ -51,19 +50,7 @@ const StyledLink = styled(Link)`
   text-decoration: underline;
 `
 
-const bannerContent: ReactNode | undefined = (
-  <>
-    Starknet pre-token market is live!
-    {PREPO_STARKNET_MARKET_BLOG_POST !== undefined && (
-      <>
-        {' '}
-        <StyledLink href={PREPO_STARKNET_MARKET_BLOG_POST} target="_blank">
-          Learn more ↗
-        </StyledLink>
-      </>
-    )}
-  </>
-)
+const bannerContent: ReactNode | undefined = undefined
 
 const Header: React.FC = () => {
   const regionBlocked = useRegionBlocked()
