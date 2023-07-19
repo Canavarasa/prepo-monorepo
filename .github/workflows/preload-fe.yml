@@ -16,7 +16,7 @@ on:
 jobs:
   preload:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
     continue-on-error: true
 
     steps:
@@ -59,4 +59,4 @@ jobs:
           PLAYWRIGHT_BASE_URL: ${{ inputs.url }}
           PLAYWRIGHT_EXPECTED_BUILD_ID: ${{ inputs.expected_build_id }}
           PLAYWRIGHT_SITE_PATH: ${{ inputs.site_path }}
-        run: yarn playwright test -g "ensure correct Build ID" --retries=200
+        run: yarn playwright test -g "ensure correct Build ID" --retries=500

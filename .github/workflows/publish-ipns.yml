@@ -16,7 +16,7 @@ jobs:
     environment: IPFS
 
     container:
-      image: docker.io/ipfs/kubo:v0.20.0
+      image: docker.io/ipfs/kubo:v0.15.0
 
     timeout-minutes: 10
 
