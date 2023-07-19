@@ -22,10 +22,6 @@ type AppWithInitialProps = React.FC<AppProps> & {
   getInitialProps?: (ctx: AppContext) => Promise<AppInitialProps>
 }
 
-const SHOULD_REDIRECT_TO_ETH_LIMO =
-  process.env.NEXT_PUBLIC_VERCEL_URL === 'app.prepo.io' &&
-  process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
-
 // mobx config
 configure({
   enforceActions: 'observed',
@@ -74,9 +70,9 @@ const App: AppWithInitialProps = ({ Component, pageProps }) => {
 App.getInitialProps = ({ ctx }) => {
   // ctx.res is not writable during pre-rendering, so we have to check for the
   // presence of `writeHead`
-  if (ctx.res && 'writeHead' in ctx.res && SHOULD_REDIRECT_TO_ETH_LIMO) {
+  if (ctx.res && 'writeHead' in ctx.res && process.env.NEXT_PUBLIC_VERCEL_REDIRECT_TO) {
     ctx.res.writeHead(307, {
-      Location: 'https://prepo.eth.limo',
+      Location: process.env.NEXT_PUBLIC_VERCEL_REDIRECT_TO,
     })
     ctx.res.end()
   }
