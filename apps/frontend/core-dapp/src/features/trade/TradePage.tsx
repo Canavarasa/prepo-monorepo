@@ -5,7 +5,6 @@ import CloseTrade from './close-trade'
 import OpenTrade from './open-trade'
 import useTradePage from './useTradePage'
 import TradePageTab from './TradePageTab'
-import MarketChart from './market-chart'
 import Simulator from '../simulator'
 import Card from '../../components/Card'
 import { useRootStore } from '../../context/RootStoreProvider'
@@ -43,7 +42,7 @@ const TradePage: React.FC = () => {
         {action === 'close' ? <CloseTrade /> : <OpenTrade />}
       </TradeCard>
       <Simulator />
-      <MarketChart />
+      {/* <MarketChart /> */}
     </Wrapper>
   )
 }

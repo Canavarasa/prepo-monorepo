@@ -32,6 +32,10 @@ const DirectionText = styled.span<{ color: keyof Color }>`
   text-transform: capitalize;
 `
 
+const SlideUpRowWithPadding = styled(SlideUpRow)`
+  padding: ${spacingIncrement(6)} ${spacingIncrement(8)};
+`
+
 const PositionsSlideUp: React.FC = () => {
   const router = useRouter()
   const { closeTradeStore, portfolioStore, tradeStore, web3Store } = useRootStore()
@@ -119,7 +123,7 @@ const PositionsSlideUp: React.FC = () => {
         ) : (
           <>
             {selectedPosition && (
-              <SlideUpRow
+              <SlideUpRowWithPadding
                 selected
                 onClick={(): void => handleSelectPosition(selectedPosition)}
                 position={selectedPosition}
@@ -129,7 +133,7 @@ const PositionsSlideUp: React.FC = () => {
             {userPositions
               .filter(({ id }) => id !== selectedPosition?.id)
               .map((position) => (
-                <SlideUpRow
+                <SlideUpRowWithPadding
                   key={position.id}
                   onClick={(): void => handleSelectPosition(position)}
                   position={position}

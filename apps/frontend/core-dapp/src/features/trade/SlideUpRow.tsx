@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { Flex, Icon, media, spacingIncrement } from 'prepo-ui'
 import styled, { Color } from 'styled-components'
 import Skeleton from '../../components/Skeleton'
-import { displayEth } from '../../utils/number-utils'
+import { compactNumber, displayEth } from '../../utils/number-utils'
 import { PositionEntity } from '../../stores/entities/Position.entity'
 
 type Props = {
@@ -23,7 +23,6 @@ const Wrapper = styled.div<{ $clickable: boolean; $selected?: boolean }>`
   display: flex;
   gap: ${spacingIncrement(8)};
   justify-content: space-between;
-  padding: ${spacingIncrement(6)} ${spacingIncrement(8)};
   width: 100%;
   :hover {
     background-color: ${({ theme }): string => theme.color.accentPrimary};
@@ -50,6 +49,13 @@ const Name = styled.p`
   width: max-content;
 `
 
+const Valuation = styled.p`
+  color: ${({ theme }): string => theme.color.neutral3};
+  font-size: ${({ theme }): string => theme.fontSize.sm};
+  font-weight: ${({ theme }): number => theme.fontWeight.medium};
+  line-height: 1.2;
+`
+
 const Balance = styled.p`
   color: ${({ theme }): string => theme.color.neutral1};
   font-size: ${({ theme }): string => theme.fontSize.base};
@@ -72,45 +78,89 @@ const SlideUpRow: React.FC<Props> = ({
   onClick,
   position,
   showBalance = false,
-}) => (
-  <Wrapper className={className} onClick={onClick} $clickable={!!onClick} $selected={selected}>
-    <Flex position="relative">
-      <Icon name={position.market.iconName} height="48" width="48" />
-      {selected && (
-        <Flex
-          color="white"
-          bg="success"
-          position="absolute"
-          bottom={0}
-          right={0}
-          width={16}
-          height={16}
-          borderRadius={16}
-        >
-          <Icon name="check" width="12" height="12" />
-        </Flex>
-      )}
-    </Flex>
-    {/** min-width: 0px is applied to make text overflow ellipsis work */}
-    <Flex flexDirection="column" alignItems="start" justifyContent="center" flex={1} minWidth="0px">
-      <NameWrapper>
-        <Name>{position.market.name}</Name>
-        {afterName}
-      </NameWrapper>
-    </Flex>
-    {showBalance && (
-      <Flex alignItems="end" flexDirection="column" paddingRight={4}>
-        {position.totalValueInEth !== undefined ? (
-          <Balance>{displayEth(+position.totalValueInEth)}</Balance>
+}) => {
+  const getValuation = (): string | undefined => {
+    if (position.estimatedValuation === undefined || position.market.valuationRange === undefined)
+      return undefined
+    if (position.estimatedValuation.value >= position.market.valuationRange[1])
+      return `>${compactNumber(position.market.valuationRange[1], {
+        showUsdSign: true,
+        maxDecimals: 2,
+        minDecimals: 2,
+      })}`
+    if (position.estimatedValuation.value <= position.market.valuationRange[0])
+      return `<${compactNumber(position.market.valuationRange[0], {
+        showUsdSign: true,
+        maxDecimals: 2,
+        minDecimals: 2,
+      })}`
+    return compactNumber(position.estimatedValuation.value, {
+      showUsdSign: true,
+      maxDecimals: 2,
+      minDecimals: 2,
+    })
+  }
+
+  const valuation = getValuation()
+  const unitPrice = position.market.getUnitPriceString(position.estimatedValuation?.value)
+
+  return (
+    <Wrapper className={className} onClick={onClick} $clickable={!!onClick} $selected={selected}>
+      <Flex position="relative">
+        <Icon name={position.market.iconName} height="48" width="48" />
+        {selected && (
+          <Flex
+            color="white"
+            bg="success"
+            position="absolute"
+            bottom={0}
+            right={0}
+            width={16}
+            height={16}
+            borderRadius={16}
+          >
+            <Icon name="check" width="12" height="12" />
+          </Flex>
+        )}
+      </Flex>
+      {/** min-width: 0px is applied to make text overflow ellipsis work */}
+      <Flex
+        flexDirection="column"
+        alignItems="start"
+        justifyContent="center"
+        flex={1}
+        minWidth="0px"
+      >
+        <NameWrapper>
+          <Name>{position.market.name}</Name>
+          {afterName}
+        </NameWrapper>
+        {valuation !== undefined ? (
+          <>
+            {!position.market.resolved && (
+              <Valuation>
+                {valuation} FDV {unitPrice !== undefined && `(${unitPrice})`}
+              </Valuation>
+            )}
+          </>
         ) : (
           <Skeleton width={60} height={20} />
         )}
-        <DirectionLabel color={position.direction === 'long' ? 'success' : 'error'}>
-          {position.direction}
-        </DirectionLabel>
       </Flex>
-    )}
-  </Wrapper>
-)
+      {showBalance && (
+        <Flex alignItems="end" flexDirection="column" paddingRight={4}>
+          {position.totalValueInEth !== undefined ? (
+            <Balance>{displayEth(+position.totalValueInEth)}</Balance>
+          ) : (
+            <Skeleton width={60} height={20} />
+          )}
+          <DirectionLabel color={position.direction === 'long' ? 'success' : 'error'}>
+            {position.direction}
+          </DirectionLabel>
+        </Flex>
+      )}
+    </Wrapper>
+  )
+}
 
 export default observer(SlideUpRow)

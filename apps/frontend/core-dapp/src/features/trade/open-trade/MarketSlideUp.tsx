@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import styled from 'styled-components'
+import { spacingIncrement } from 'prepo-ui'
 import SlideUpCard from '../SlideUpCard'
 import { useRootStore } from '../../../context/RootStoreProvider'
 import MarketButton from '../SlideUpButton'
@@ -14,6 +15,10 @@ const SelectedMarket = styled(SlideUpRow)`
   :hover {
     background-color: transparent;
   }
+`
+
+const SlideUpRowWithPadding = styled(SlideUpRow)`
+  padding: ${spacingIncrement(6)} ${spacingIncrement(8)};
 `
 
 const MarketSlideUp: React.FC = () => {
@@ -54,7 +59,7 @@ const MarketSlideUp: React.FC = () => {
         title="Select a Market"
       >
         {selectedPosition && (
-          <SlideUpRow
+          <SlideUpRowWithPadding
             position={selectedPosition}
             onClick={() => handleSelectMarket(selectedPosition.market.urlId)}
             selected
@@ -71,7 +76,7 @@ const MarketSlideUp: React.FC = () => {
             position.market.resolved === undefined ? (
               <PositionLoadingSkeleton key={position.id} />
             ) : (
-              <SlideUpRow
+              <SlideUpRowWithPadding
                 key={position.id}
                 position={position}
                 onClick={() => handleSelectMarket(position.market.urlId)}
