@@ -1,0 +1,312 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-link-color: #6264d8;
+  --ifm-breadcrumb-color: #525252;
+  --ifm-breadcrumb-color-active: #525252;
+  --ifm-color-primary: #6264d8;
+  --ifm-color-primary-dark: #494bd2;
+  --ifm-color-primary-darker: #3c3fcf;
+  --ifm-color-primary-darkest: #2c2eb0;
+  --ifm-color-primary-light: #7b7dde;
+  --ifm-color-primary-lighter: #8889e1;
+  --ifm-color-primary-lightest: #adaeeb;
+  --ifm-menu-color-background-active: #eff2f5;
+  --ifm-menu-color-background-hover: unset;
+  --ifm-menu-caret-color-background-hover: #eff2f5;
+  --ifm-navbar-background-color-active: #eff2f5;
+  --ifm-navbar-color-active: #525252;
+  --ifm-navbar-item-color: #525252;
+  --ifm-toc-border-color: #eff2f5;
+  --ifm-toc-link-color: #525252;
+}
+
+html[data-theme='dark'] {
+  --ifm-link-color: #9b9dff;
+  --ifm-background-color: #191b1f;
+  --ifm-breadcrumb-color: #ffffff;
+  --ifm-breadcrumb-color-active: #ffffff;
+  --ifm-breadcrumb-item-background-active: #40444f;
+  --ifm-menu-color-background-active: #40444f;
+  --ifm-menu-color-background-hover: unset;
+  --ifm-menu-caret-color-background-hover: #212429;
+  --ifm-navbar-background-color-active: #40444f;
+  --ifm-navbar-color-active: #ffffff;
+  --ifm-navbar-item-color: #ffffff;
+  --ifm-pagination-nav-color-hover: #9b9dff;
+  --ifm-toc-border-color: #40444f;
+  --ifm-toc-link-color: #ffffff;
+}
+
+a {
+  transition: none !important;
+}
+
+.navbar__items--right > :last-child {
+  padding-left: 0;
+}
+
+.menu__link,
+.menu__caret {
+  border-radius: 14px;
+}
+
+.menu__caret:hover {
+  background-color: var(--ifm-menu-caret-color-background-hover);
+}
+
+.navbar-item,
+.menu__link,
+.breadcrumbs__link {
+  color: var(--ifm-navbar-item-color);
+  font-weight: 600;
+  opacity: 0.7;
+  margin-bottom: 0;
+}
+
+.table-of-contents__link {
+  opacity: 0.7;
+}
+
+.navbar__link--active,
+.navbar-item:hover,
+.menu__link:hover,
+.menu__link--active,
+a.breadcrumbs__link:hover,
+.breadcrumbs__item--active > .breadcrumbs__link,
+.table-of-contents__link--active,
+.table-of-contents__link:hover {
+  opacity: 1;
+}
+
+a.breadcrumbs__link:hover,
+.menu__link--active,
+.navbar__link:hover,
+.menu__link--active:hover,
+.menu__link:hover {
+  color: var(--ifm-navbar-item-color);
+}
+
+.breadcrumbs__link:any-link:hover {
+  background-color: unset;
+}
+
+.table-of-contents__link--active,
+.table-of-contents__link:hover {
+  color: var(--ifm-toc-link-color);
+}
+
+.pagination-nav__link {
+  border: 1px solid var(--ifm-toc-border-color);
+}
+
+.navbar__link--active {
+  background-color: var(--ifm-navbar-background-color-active);
+  border-radius: 14px;
+  color: var(--ifm-navbar-color-active);
+}
+
+.navbar__item > svg[class*='iconExternalLink_'] {
+  display: none;
+}
+
+.navbar__items--right {
+  gap: 8px;
+}
+
+.navbar__search {
+  margin-left: 0 !important;
+}
+
+.header-social-link {
+  align-items: center;
+  border-radius: 50%;
+  display: flex;
+  height: 2rem;
+  justify-content: center;
+  padding: 0;
+  width: 2rem;
+}
+
+.header-social-link:hover {
+  color: var(--ifm-menu-color);
+  opacity: 0.7;
+}
+
+.header-social-divider {
+  height: 24px;
+  padding-left: 0;
+  padding-right: 0;
+  border-right: 1px solid var(--ifm-toc-border-color);
+  pointer-events: none;
+  width: 1px;
+}
+
+@media (max-width: 996px) {
+  .navbar__item {
+    display: none !important;
+  }
+
+  .menu__list-item:has(.header-social-link):nth-last-child(-n + 4) {
+    display: inline-block;
+    margin-left: 8px;
+    margin-top: 16px;
+    width: max-content;
+  }
+  .menu__list-item:has(.header-social-link):nth-last-child(-n + 4) > a:hover {
+    background: unset;
+  }
+  .menu__link > svg[class*='iconExternalLink_'] {
+    display: none;
+  }
+  .header-social-divider {
+    display: none;
+  }
+}
+
+.docusaurus-highlight-code-line {
+  background-color: rgba(0, 0, 0, 0.1);
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
+
+html[data-theme='dark'] .docusaurus-highlight-code-line {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.react-toggle {
+  margin-right: 1rem;
+}
+
+figcaption {
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.col:has(.table-of-contents) {
+  padding: 0;
+}
+
+.table-of-contents {
+  margin-right: 0;
+}
+
+.container {
+  max-width: 98% !important;
+  padding: 0 !important;
+  padding-bottom: 2rem !important;
+  padding-top: 2rem !important;
+}
+
+@media (min-width: 997px) {
+  .container {
+    margin-left: auto;
+    margin-right: 0;
+  }
+}
+
+.container > .row {
+  margin: 0;
+  width: 100%;
+}
+
+.navbar {
+  box-shadow: rgb(98 100 216 / 11%) 0px 4px 22px;
+  padding: 0 !important;
+}
+
+.main-wrapper,
+.navbar__inner {
+  max-width: 1480px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.navbar__inner {
+  padding: 0 16px;
+}
+
+.theme-doc-sidebar-container,
+.theme-doc-sidebar-container > div {
+  width: 290px !important;
+}
+
+.menu {
+  padding: 1.5rem 1rem !important;
+}
+
+.rework > .menu__link,
+.rework > * > .menu__link {
+  font-size: 14px;
+}
+
+.rework > * > .menu__link.menu__link--sublist-caret::after {
+  background: var(--ifm-menu-link-sublist-icon) 50% / 1.5rem 1.5rem;
+  height: 0.75rem;
+  width: 0.75rem;
+}
+
+.sidebar-section-title {
+  align-items: center;
+  color: var(--ifm-menu-color);
+  display: flex;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  gap: 8px;
+  margin-bottom: 0;
+  text-transform: uppercase;
+}
+
+.sidebar-section-title > span {
+  align-items: center;
+  display: flex;
+  font-size: 12px;
+  height: 15px;
+  justify-content: center;
+}
+
+.sidebar-section-title-wrapper {
+  padding: 0 12px;
+}
+
+.sidebar-section-title-wrapper:not(:first-child) {
+  margin-top: 32px;
+}
+
+.cols-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 0;
+  padding-left: 20px;
+}
+
+@media (min-width: 480px) {
+  .cols-section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.investor-wrapper {
+  margin-top: 0 !important;
+  width: 100%;
+}
+
+.investor-name,
+.investor-title {
+  margin-bottom: 0;
+  margin-top: 0 !important;
+}
+
+.investor-title {
+  font-size: 14px;
+}

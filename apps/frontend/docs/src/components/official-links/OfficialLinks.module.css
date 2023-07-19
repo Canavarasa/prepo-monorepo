@@ -1,0 +1,13 @@
+.listsWrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 12px;
+  margin-bottom: 12px;
+}
+
+@media (max-width: 600px) {
+  .listsWrapper {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

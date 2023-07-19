@@ -1,0 +1,11 @@
+{
+  "extends": "@tsconfig/docusaurus/tsconfig.json",
+  "include": ["next-env.d.ts", "src/**/*", "src/styles/globals.css", "generated/**/*"],
+  "exclude": ["node_modules", ".next", ".turbo"],
+  "display": "Docusaurus v2",
+  "compilerOptions": {
+    "jsx": "react",
+    "noImplicitAny": false,
+    "baseUrl": "."
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "github": {
+    "silent": true
+  },
+  "framework": "nextjs",
+  "installCommand": "cd ../../../ && yarn install",
+  "buildCommand": "npx turbo run build --filter=react-boilerplate",
+  "ignoreCommand": "npx turbo-ignore react-boilerplate --task=build --fallback=HEAD^"
+}

@@ -1,0 +1,70 @@
+{
+  "pipeline": {
+    "codegen": {
+      "outputs": ["src/generated/**"]
+    },
+    "build": {
+      "dependsOn": ["codegen", "^build"],
+      "outputs": ["build/**", "dist/**", ".next/**"]
+    },
+    "export": {},
+    "core-dapp#codegen": {
+      "inputs": ["abi/**", "internals/**", "src/graphql/**"],
+      "outputs": ["generated/**"]
+    },
+    "core-dapp#build": {
+      "dependsOn": ["codegen", "^build"],
+      "inputs": ["public/**", "next.config.js", "src/**"],
+      "outputs": [".next/**"],
+      "env": [
+        "NEXT_PUBLIC_HOST",
+        "SENTRY_ORG",
+        "SENTRY_PROJECT",
+        "NEXT_PUBLIC_PREPO_BUILD_ID",
+        "NEXT_PUBLIC_SENTRY_DSN",
+        "NEXT_PUBLIC_VERCEL_ENV",
+        "SENTRY_AUTH_TOKEN",
+        "SENTRY_LOG_LEVEL",
+        "NPM_RC"
+      ]
+    },
+    "core-dapp#export": {
+      "dependsOn": ["build"],
+      "inputs": ["next-sitemap.js"],
+      "outputs": ["out/**"]
+    },
+    "react-boilerplate#build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "out/**"],
+      "env": [
+        "SENTRY_ORG",
+        "SENTRY_PROJECT",
+        "NEXT_PUBLIC_SENTRY_DSN",
+        "SENTRY_AUTH_TOKEN",
+        "NPM_RC"
+      ]
+    },
+    "docs#build": {
+      "dependsOn": ["^build"],
+      "outputs": ["build/**"],
+      "env": ["NPM_RC"]
+    },
+    "website#build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "out/**"],
+      "env": ["NEXT_PUBLIC_RECAPTCHA_SITE_ID", "NPM_RC"]
+    },
+    "simulator#build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"],
+      "env": ["NPM_RC"]
+    },
+    "test:ci": {
+      "outputs": [],
+      "inputs": ["src/**/*.tsx", "src/**/*.ts", "test/**/*.ts"]
+    },
+    "lint": {
+      "outputs": []
+    }
+  }
+}

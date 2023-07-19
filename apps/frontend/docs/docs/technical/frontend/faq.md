@@ -1,0 +1,3 @@
+# Frontend FAQ
+
+Coming soon!

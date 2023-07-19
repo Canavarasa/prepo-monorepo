@@ -1,0 +1,347 @@
+[
+  {
+    "inputs": [],
+    "name": "AddressBeaconNotSet",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "LongTokenAddressTooHigh",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ShortTokenAddressTooHigh",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "UintBeaconNotSet",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "beacon",
+        "type": "address"
+      }
+    ],
+    "name": "AddressBeaconChange",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "market",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "deployer",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "longToken",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "shortToken",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "addressBeacon",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "uintBeacon",
+        "type": "address"
+      },
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "collateral",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "floorLongPayout",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "ceilingLongPayout",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "expiryLongPayout",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "floorValuation",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "ceilingValuation",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "expiryTime",
+            "type": "uint256"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct IPrePOMarket.MarketParameters",
+        "name": "parameters",
+        "type": "tuple"
+      }
+    ],
+    "name": "MarketCreation",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousNominee",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newNominee",
+        "type": "address"
+      }
+    ],
+    "name": "NomineeUpdate",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "beacon",
+        "type": "address"
+      }
+    ],
+    "name": "UintBeaconChange",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "acceptOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "tokenNameSuffix",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "tokenSymbolSuffix",
+        "type": "string"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "longTokenSalt",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "shortTokenSalt",
+        "type": "bytes32"
+      },
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "collateral",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "floorLongPayout",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "ceilingLongPayout",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "expiryLongPayout",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "floorValuation",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "ceilingValuation",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "expiryTime",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct IPrePOMarket.MarketParameters",
+        "name": "parameters",
+        "type": "tuple"
+      }
+    ],
+    "name": "createMarket",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getAddressBeacon",
+    "outputs": [
+      {
+        "internalType": "contract IAddressBeacon",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getNominee",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getUintBeacon",
+    "outputs": [
+      {
+        "internalType": "contract IUintBeacon",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IAddressBeacon",
+        "name": "addressBeacon",
+        "type": "address"
+      }
+    ],
+    "name": "setAddressBeacon",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IUintBeacon",
+        "name": "uintBeacon",
+        "type": "address"
+      }
+    ],
+    "name": "setUintBeacon",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "nominee",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

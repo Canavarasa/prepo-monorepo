@@ -1,0 +1,173 @@
+name: Deploy front-end
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: IPFS
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Ignore
+        id: ignore
+        continue-on-error: true
+        run: npx turbo-ignore core-dapp --task=build
+
+      - name: Restore node_modules cache
+        if: steps.ignore.outcome != 'success'
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Use NodeJS 16
+        if: steps.ignore.outcome != 'success'
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Setup npm
+        if: steps.ignore.outcome != 'success'
+        run: |
+          npm set @prepo-io:registry=https://npm.pkg.github.com/prepo-io
+          npm set "//npm.pkg.github.com/:_authToken=${{ secrets.PREPO_PACKAGES_TOKEN }}"
+
+      - name: Install Dependencies
+        if: steps.ignore.outcome != 'success'
+        run: |
+          yarn install --frozen-lockfile
+
+      - name: Restore Next.js cache
+        if: steps.ignore.outcome != 'success'
+        uses: actions/cache@v3
+        with:
+          path: 'apps/frontend/core-dapp/.next/cache'
+          key: ${{ runner.os }}-next-cache-${{ hashFiles('**/yarn.lock') }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-next-cache-${{ hashFiles('**/yarn.lock') }}-
+
+      - name: Get build time
+        id: timestamp
+        run: echo "build_time=$(date +%s000)" >> "$GITHUB_OUTPUT"
+
+      - name: Build
+        if: steps.ignore.outcome != 'success'
+        run: yarn turbo run export --filter=core-dapp
+        env:
+          NEXT_PUBLIC_PREPO_BUILD_ID: ${{ github.sha }}
+          NEXT_PUBLIC_PREPO_BUILD_TIME: ${{ steps.timestamp.outputs.build_time }}
+          NEXT_PUBLIC_VERCEL_ENV: production
+
+      - name: Certify front-end
+        if: steps.ignore.outcome != 'success'
+        working-directory: apps/frontend/core-dapp
+        env:
+          BUILD_ID: ${{ github.sha }}
+          IPNS_KEY_BASE64: ${{ secrets.IPNS_KEY_BASE64 }}
+        run: yarn -s certify-fe > out/BUILD_CERTIFICATION.json
+
+      - name: Measure byte size
+        id: measure_size
+        if: steps.ignore.outcome != 'success'
+        working-directory: apps/frontend/core-dapp
+        run: |
+          disk_usage_report="$(du -sb out)"
+          byte_size="$(echo $disk_usage_report | awk '{print $1}')"
+
+          echo "byte_size=$byte_size" >> "$GITHUB_OUTPUT"
+
+      - name: Upload to IPFS and pin on Infura
+        id: ipfs_upload
+        if: steps.ignore.outcome != 'success'
+        working-directory: apps/frontend/core-dapp
+        env:
+          IPFS_DEPLOY_INFURA__PROJECT_ID: ${{ secrets.IPFS_DEPLOY_INFURA__PROJECT_ID }}
+          IPFS_DEPLOY_INFURA__PROJECT_SECRET: ${{ secrets.IPFS_DEPLOY_INFURA__PROJECT_SECRET }}
+        run: |
+          cid="$(yarn -s ipfs-deploy -q -u infura -p infura out)"
+          cid="$(node -e "console.log(require('multiformats/cid').CID.parse('$cid').toV1().toString())")"
+          echo "cid=$cid" >> "$GITHUB_OUTPUT"
+
+    outputs:
+      byte_size: ${{ steps.measure_size.outputs.byte_size }}
+      cid: ${{ steps.ipfs_upload.outputs.cid }}
+
+  pin_on_crust:
+    runs-on: ubuntu-latest
+    environment: IPFS
+    if: ${{ needs.deploy.outputs.cid }}
+    needs:
+      - deploy
+    timeout-minutes: 10
+
+    steps:
+      - uses: crustio/ipfs-crust-action@v2.0.6
+        with:
+          cid: ${{ needs.deploy.outputs.cid }}
+          seeds: ${{ secrets.CRUST_SEED }}
+          size: ${{ needs.deploy.outputs.byte_size }}
+
+  publish_ipns:
+    if: ${{ needs.deploy.outputs.cid }}
+    needs:
+      - deploy
+    uses: ./.github/workflows/publish-ipns.yml
+    secrets: inherit
+    with:
+      build_id: ${{ github.sha }}
+      cid: ${{ needs.deploy.outputs.cid }}
+
+  log_to_notion:
+    runs-on: ubuntu-latest
+    environment: IPFS
+    if: ${{ needs.deploy.outputs.cid }}
+    needs:
+      - deploy
+
+    steps:
+      - name: Log deployment to Notion
+        env:
+          CID: ${{ needs.deploy.outputs.cid }}
+          GIT_SHA: ${{ github.sha }}
+          NOTION_INTEGRATION_SECRET: ${{ secrets.NOTION_INTEGRATION_SECRET }}
+          NOTION_LOG_DATABASE_ID: ${{ secrets.NOTION_LOG_DATABASE_ID }}
+        run: |
+          now="$(date -Iseconds)"
+          cat << EOF > /tmp/payload.json
+          {
+            "parent": {
+              "type": "database_id",
+              "database_id": "$NOTION_LOG_DATABASE_ID"
+            },
+            "properties": {
+              "IPFS CID": {
+                "title": [
+                  {
+                    "text": { "content": "$CID" }
+                  }
+                ]
+              },
+              "Git Commit": {
+                "rich_text": [
+                  {
+                    "text": { "content": "$GIT_SHA" }
+                  }
+                ]
+              }
+            }
+          }
+          EOF
+
+          curl -X POST https://api.notion.com/v1/pages \
+            -H "Authorization: Bearer $NOTION_INTEGRATION_SECRET" \
+            -H "Content-Type: application/json" \
+            -H "Notion-Version: 2022-06-28" \
+            --data @/tmp/payload.json

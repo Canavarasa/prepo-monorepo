@@ -1,0 +1,8 @@
+{
+  "github": {
+    "silent": true
+  },
+  "installCommand": "cd ../../../ && yarn install",
+  "buildCommand": "npx turbo run build --filter=docs",
+  "ignoreCommand": "npx turbo-ignore docs --task=build --fallback=HEAD^"
+}

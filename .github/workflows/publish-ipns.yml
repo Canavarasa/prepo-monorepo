@@ -1,0 +1,99 @@
+name: Update IPNS and Preload
+
+on:
+  workflow_call:
+    inputs:
+      build_id:
+        required: true
+        type: string
+      cid:
+        required: true
+        type: string
+
+jobs:
+  update_ipns:
+    runs-on: ubuntu-latest
+    environment: IPFS
+
+    container:
+      image: docker.io/ipfs/kubo:v0.20.0
+
+    timeout-minutes: 10
+
+    steps:
+      - name: Update IPNS
+        id: ipns_update
+        env:
+          CID: ${{ inputs.cid }}
+          IPNS_KEY_BASE64: ${{ secrets.IPNS_KEY_BASE64 }}
+        run: |
+          ipfs init --profile=lowpower
+          ipfs config --json Ipns.UsePubsub true
+
+          ipfs daemon &
+          daemon_pid="$!"
+          sleep 30
+
+          cat > /tmp/key.pem << EOF
+          -----BEGIN PRIVATE KEY-----
+          $IPNS_KEY_BASE64
+          -----END PRIVATE KEY-----
+          EOF
+          ipns_address="$(ipfs key import prepo -f pem-pkcs8-cleartext /tmp/key.pem)"
+
+          ipfs name publish "$CID" \
+            --resolve=false \
+            --key prepo \
+            --lifetime 1440h \
+            --ttl 60s
+
+          kill -INT "$daemon_pid"
+          echo "ipns_address=$ipns_address" >> "$GITHUB_OUTPUT"
+
+    outputs:
+      ipns_address: ${{ steps.ipns_update.outputs.ipns_address }}
+
+  preload_ipns:
+    needs:
+      - update_ipns
+
+    uses: ./.github/workflows/preload-fe.yml
+
+    strategy:
+      matrix:
+        gateway:
+          - cf-ipfs.com
+          - dweb.link
+        path:
+          - /
+          - /portfolio
+          - /portfolio/deposit
+          - /portfolio/withdraw
+          - /trade
+          - /withdraw
+
+    with:
+      url: https://${{ needs.update_ipns.outputs.ipns_address }}.ipns.${{ matrix.gateway }}
+      expected_build_id: ${{ inputs.build_id }}
+      site_path: ${{ matrix.path }}
+
+  preload_ens:
+    needs:
+      - update_ipns
+
+    uses: ./.github/workflows/preload-fe.yml
+
+    strategy:
+      matrix:
+        path:
+          - /
+          - /portfolio
+          - /portfolio/deposit
+          - /portfolio/withdraw
+          - /trade
+          - /withdraw
+
+    with:
+      url: https://prepo.eth.limo
+      expected_build_id: ${{ inputs.build_id }}
+      site_path: ${{ matrix.path }}

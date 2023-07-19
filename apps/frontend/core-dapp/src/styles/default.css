@@ -1,0 +1,12 @@
+.ant-dropdown,
+.ant-tooltip {
+  animation-duration: 0s !important;
+}
+
+p {
+  margin-bottom: 0;
+}
+
+a {
+  transition: 0s;
+}

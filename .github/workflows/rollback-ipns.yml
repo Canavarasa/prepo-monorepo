@@ -1,0 +1,46 @@
+name: Rollback IPNS
+
+on:
+  workflow_dispatch:
+    inputs:
+      cid:
+        required: true
+        type: string
+        description: IPFS CID of the deployed front-end
+
+jobs:
+  get_build_id:
+    runs-on: ubuntu-latest
+    environment: IPFS
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Use NodeJS 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Get Build ID
+        id: request_build_id
+        working-directory: apps/frontend/core-dapp
+        env:
+          CID: ${{ inputs.cid }}
+          IPNS_KEY_BASE64: ${{ secrets.IPNS_KEY_BASE64 }}
+        run: |
+          build_cert="$(curl -sf https://$CID.ipfs.cf-ipfs.com/BUILD_CERTIFICATION.json)"
+          build_id="$(yarn -s decode-build-certification $build_cert)"
+          echo "build_id=$build_id" >> "$GITHUB_OUTPUT"
+
+    outputs:
+      build_id: ${{ steps.request_build_id.outputs.build_id }}
+
+  publish_ipns:
+    needs:
+      - get_build_id
+    uses: ./.github/workflows/publish-ipns.yml
+    secrets: inherit
+    with:
+      build_id: ${{ needs.get_build_id.outputs.build_id }}
+      cid: ${{ inputs.cid }}

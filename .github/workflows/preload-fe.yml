@@ -1,0 +1,62 @@
+name: Preload Front-end
+
+on:
+  workflow_call:
+    inputs:
+      url:
+        required: true
+        type: string
+      expected_build_id:
+        required: true
+        type: string
+      site_path:
+        required: true
+        type: string
+
+jobs:
+  preload:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    continue-on-error: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Restore node_modules cache
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Use NodeJS 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Setup npm
+        run: |
+          npm set @prepo-io:registry=https://npm.pkg.github.com/prepo-io
+          npm set "//npm.pkg.github.com/:_authToken=${{ secrets.PREPO_PACKAGES_TOKEN }}"
+
+      - name: Install Dependencies
+        run: |
+          yarn install --frozen-lockfile
+
+      - name: Install Playwright Dependencies
+        working-directory: apps/frontend/core-dapp
+        run: yarn playwright install --with-deps
+
+      - name: Codegen
+        run: yarn turbo run codegen --filter=core-dapp
+        env:
+          NEXT_PUBLIC_PREPO_BUILD_ID: ${{ github.sha }}
+          NEXT_PUBLIC_VERCEL_ENV: production
+
+      - name: Preload
+        working-directory: apps/frontend/core-dapp
+        env:
+          PLAYWRIGHT_BASE_URL: ${{ inputs.url }}
+          PLAYWRIGHT_EXPECTED_BUILD_ID: ${{ inputs.expected_build_id }}
+          PLAYWRIGHT_SITE_PATH: ${{ inputs.site_path }}
+        run: yarn playwright test -g "ensure correct Build ID" --retries=200

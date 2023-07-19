@@ -1,0 +1,114 @@
+type CollateralToken @entity {
+  "collateral token address"
+  id: ID!
+  "is collateral allowed"
+  allowed: Boolean!
+}
+
+type LongShortToken @entity {
+  "token address"
+  id: ID!
+  "the market this token is traded for"
+  market: Market!
+}
+
+type Market @entity {
+  "market contract address"
+  id: ID!
+  "long token"
+  longToken: LongShortToken!
+  "short token"
+  shortToken: LongShortToken!
+  "collateral token"
+  collateralToken: CollateralToken!
+  "floor long payout"
+  floorLongPayout: BigInt!
+  "ceiling long payout"
+  ceilingLongPayout: BigInt!
+  "floor valuation"
+  floorValuation: BigInt!
+  "ceiling valuation"
+  ceilingValuation: BigInt!
+  "market expiry time"
+  expiryTime: BigInt!
+  "when market was created"
+  createdAtTimestamp: BigInt!
+  "at which block was market created"
+  createdAtBlockNumber: BigInt!
+}
+
+type Pool @entity {
+  "pool contract address"
+  id: ID!
+  "address of token0"
+  token0: Token!
+  "address of token1"
+  token1: Token!
+  "long/short token of this pool"
+  longShortToken: LongShortToken!
+  "collateral token of this pool"
+  collateralToken: CollateralToken!
+  "0 or 1"
+  collateralTokenPosition: BigInt!
+  "token0 per token1"
+  token0Price: BigDecimal!
+  "token1 per token0"
+  token1Price: BigDecimal!
+  "fee of pool"
+  fee: BigInt!
+  "The sqrt(price) of the pool as a Q64.96"
+  sqrtPriceX96: BigInt!
+  "pool creation time"
+  createdAtTimestamp: BigInt!
+  "at which block was pool created"
+  createdAtBlockNumber: BigInt!
+}
+
+type Transaction @entity {
+  "template: {ACTION}-{OWNER_ADDRESS}-{TRANSACTION_HASH}-{LOG_INDEX}"
+  id: ID!
+  "actions we recognized (e.g. send, open, close, receive)"
+  action: String!
+  "token amount in ETH value (the amount to show on portfolio page UI)"
+  amount: BigDecimal!
+  "fee amount"
+  fee: BigInt
+  "the contract that emitted this event"
+  contractAddress: String!
+  "address of token this transaction is associated with"
+  tokenAddress: String!
+  "block number"
+  createdAtBlockNumber: BigInt!
+  "when transaction was made"
+  createdAtTimestamp: BigInt!
+  "transaction hash"
+  hash: String!
+  "owner"
+  ownerAddress: String!
+  "rate to ETH at tx time"
+  rateToEth: BigInt!
+}
+
+type Token @entity {
+  "address of token contract"
+  id: ID!
+  "decimals of token"
+  decimals: BigInt!
+  "name of token"
+  name: String!
+  "symbol of token"
+  symbol: String!
+  "e.g. Long, Short, Collateral, CollateralBase"
+  type: String!
+}
+
+type Position @entity {
+  "template: {USER_ADDRESS}-{LONG_SHORT_TOKEN_ADDRESS}}"
+  id: ID!
+  "average cost per token - for PNL calculation"
+  costBasis: BigDecimal!
+  "address who owned this position"
+  ownerAddress: String!
+  "token of which this position is tracking"
+  longShortToken: LongShortToken!
+}

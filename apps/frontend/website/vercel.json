@@ -1,0 +1,9 @@
+{
+  "github": {
+    "silent": true
+  },
+  "framework": "nextjs",
+  "installCommand": "cd ../../../ && yarn install",
+  "buildCommand": "npx turbo run build --filter=website",
+  "ignoreCommand": "npx turbo-ignore website --task=build --fallback=HEAD^"
+}

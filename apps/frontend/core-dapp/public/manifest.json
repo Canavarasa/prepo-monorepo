@@ -1,0 +1,29 @@
+{
+  "name": "prePO",
+  "description": "Pre‑IPO & Pre‑Token Exchange",
+  "start_url": "/trade",
+  "lang": "en-US",
+  "theme_color": "#6264d8",
+  "display": "browser",
+  "orientation": "portrait",
+  "iconPath": "prepo-logo-circle.svg",
+  "icons": [
+    {
+      "src": "/prepo-logo-circle.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ],
+  "shortcuts": [
+    {
+      "url": "/trade",
+      "name": "Trade",
+      "description": "Open or close a position"
+    },
+    {
+      "url": "/portfolio",
+      "name": "Portfolio",
+      "description": "Manage your open positions"
+    }
+  ]
+}

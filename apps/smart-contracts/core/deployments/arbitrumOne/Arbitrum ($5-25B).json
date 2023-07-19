@@ -1,0 +1,1024 @@
+{
+  "address": "0x4b374358ad7Cafe246f2Cf51b1164885ed3D743d",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "collateral",
+          "type": "address"
+        },
+        {
+          "internalType": "contract ILongShortToken",
+          "name": "longToken",
+          "type": "address"
+        },
+        {
+          "internalType": "contract ILongShortToken",
+          "name": "shortToken",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "floorLongPayout",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "ceilingLongPayout",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "floorValuation",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "ceilingValuation",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "expiryTime",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "payout",
+          "type": "uint256"
+        }
+      ],
+      "name": "FinalLongPayoutSet",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "minter",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "Mint",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "hook",
+          "type": "address"
+        }
+      ],
+      "name": "MintHookChange",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "hook",
+          "type": "address"
+        }
+      ],
+      "name": "RedeemHookChange",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "redeemer",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amountAfterFee",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "fee",
+          "type": "uint256"
+        }
+      ],
+      "name": "Redemption",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "fee",
+          "type": "uint256"
+        }
+      ],
+      "name": "RedemptionFeeChange",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "previousAdminRole",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "newAdminRole",
+          "type": "bytes32"
+        }
+      ],
+      "name": "RoleAdminChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "newRoleAdminNominee",
+          "type": "bytes32"
+        }
+      ],
+      "name": "RoleAdminNomineeUpdate",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        }
+      ],
+      "name": "RoleGranted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "nominated",
+          "type": "bool"
+        }
+      ],
+      "name": "RoleNomineeUpdate",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        }
+      ],
+      "name": "RoleRevoked",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "DEFAULT_ADMIN_ROLE",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "FEE_DENOMINATOR",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "FEE_LIMIT",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "MAX_PAYOUT",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "SET_FINAL_LONG_PAYOUT_ROLE",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "SET_MINT_HOOK_ROLE",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "SET_REDEEM_HOOK_ROLE",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "SET_REDEMPTION_FEE_ROLE",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        }
+      ],
+      "name": "acceptRole",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        }
+      ],
+      "name": "acceptRoleAdmin",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getCeilingLongPayout",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getCeilingValuation",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getCollateral",
+      "outputs": [
+        {
+          "internalType": "contract IERC20",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getExpiryTime",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getFinalLongPayout",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getFloorLongPayout",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getFloorValuation",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getLongToken",
+      "outputs": [
+        {
+          "internalType": "contract ILongShortToken",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getMintHook",
+      "outputs": [
+        {
+          "internalType": "contract IHook",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getRedeemHook",
+      "outputs": [
+        {
+          "internalType": "contract IHook",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getRedemptionFee",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getRoleAdmin",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getRoleAdminNominee",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "index",
+          "type": "uint256"
+        }
+      ],
+      "name": "getRoleMember",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getRoleMemberCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getShortToken",
+      "outputs": [
+        {
+          "internalType": "contract ILongShortToken",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "grantRole",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "hasRole",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "isNominated",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "mint",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "longAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "shortAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        }
+      ],
+      "name": "redeem",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "renounceRole",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "revokeNomination",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "revokeRole",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "finalLongPayout",
+          "type": "uint256"
+        }
+      ],
+      "name": "setFinalLongPayout",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract IHook",
+          "name": "mintHook",
+          "type": "address"
+        }
+      ],
+      "name": "setMintHook",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract IHook",
+          "name": "redeemHook",
+          "type": "address"
+        }
+      ],
+      "name": "setRedeemHook",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "redemptionFee",
+          "type": "uint256"
+        }
+      ],
+      "name": "setRedemptionFee",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "roleAdminNominee",
+          "type": "bytes32"
+        }
+      ],
+      "name": "setRoleAdminNominee",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes4",
+          "name": "interfaceId",
+          "type": "bytes4"
+        }
+      ],
+      "name": "supportsInterface",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0x76e085b4e0bf2197c6ba36693ee0f7f6e809bff5b96c7631044840e88645b074",
+  "receipt": {
+    "to": "0x6F889e3fCE9B13fe8cefA068a48F4074292E663c",
+    "from": "0x4F05Cf239a8BC2bfdA92673bC3c8a87E091b6D97",
+    "contractAddress": null,
+    "transactionIndex": 2,
+    "gasUsed": "5623671",
+    "logsBloom": "0x00000004100000000000000001000000000000000002040010800000000000000000202000000000000000000200000000200000200000000000040000000000000000000000000000000000000000000201000000000000000000000000000040000000020000000000000000000800000000020000000000000200000000400000000040000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000001000000001000002000200000000000002000000000000000000004000000000000000100000010000021000000000104000000000000000000000000000000000000040000000000000000",
+    "blockHash": "0x794d204b169b49fa485df0f63a031d6cc0a17a2339e77f0b8ac6d59ad765c3aa",
+    "transactionHash": "0x76e085b4e0bf2197c6ba36693ee0f7f6e809bff5b96c7631044840e88645b074",
+    "logs": [
+      {
+        "transactionIndex": 2,
+        "blockNumber": 70521294,
+        "transactionHash": "0x76e085b4e0bf2197c6ba36693ee0f7f6e809bff5b96c7631044840e88645b074",
+        "address": "0x513b37DEefF647C4836ACCc1918De68d7b9dA8b4",
+        "topics": [
+          "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x0000000000000000000000006f889e3fce9b13fe8cefa068a48f4074292e663c"
+        ],
+        "data": "0x",
+        "logIndex": 10,
+        "blockHash": "0x794d204b169b49fa485df0f63a031d6cc0a17a2339e77f0b8ac6d59ad765c3aa"
+      },
+      {
+        "transactionIndex": 2,
+        "blockNumber": 70521294,
+        "transactionHash": "0x76e085b4e0bf2197c6ba36693ee0f7f6e809bff5b96c7631044840e88645b074",
+        "address": "0x468713C658978b3F6600A5379F871242fd553554",
+        "topics": [
+          "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x0000000000000000000000006f889e3fce9b13fe8cefa068a48f4074292e663c"
+        ],
+        "data": "0x",
+        "logIndex": 11,
+        "blockHash": "0x794d204b169b49fa485df0f63a031d6cc0a17a2339e77f0b8ac6d59ad765c3aa"
+      },
+      {
+        "transactionIndex": 2,
+        "blockNumber": 70521294,
+        "transactionHash": "0x76e085b4e0bf2197c6ba36693ee0f7f6e809bff5b96c7631044840e88645b074",
+        "address": "0x4b374358ad7Cafe246f2Cf51b1164885ed3D743d",
+        "topics": [
+          "0x2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d",
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x0000000000000000000000006f889e3fce9b13fe8cefa068a48f4074292e663c",
+          "0x0000000000000000000000006f889e3fce9b13fe8cefa068a48f4074292e663c"
+        ],
+        "data": "0x",
+        "logIndex": 12,
+        "blockHash": "0x794d204b169b49fa485df0f63a031d6cc0a17a2339e77f0b8ac6d59ad765c3aa"
+      },
+      {
+        "transactionIndex": 2,
+        "blockNumber": 70521294,
+        "transactionHash": "0x76e085b4e0bf2197c6ba36693ee0f7f6e809bff5b96c7631044840e88645b074",
+        "address": "0x4b374358ad7Cafe246f2Cf51b1164885ed3D743d",
+        "topics": [
+          "0xf6391f5c32d9c69d2a47ea670b442974b53935d1edc7fd64eb21e047a839171b",
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x0000000000000000000000006f889e3fce9b13fe8cefa068a48f4074292e663c",
+          "0x0000000000000000000000006f889e3fce9b13fe8cefa068a48f4074292e663c"
+        ],
+        "data": "0x",
+        "logIndex": 13,
+        "blockHash": "0x794d204b169b49fa485df0f63a031d6cc0a17a2339e77f0b8ac6d59ad765c3aa"
+      },
+      {
+        "transactionIndex": 2,
+        "blockNumber": 70521294,
+        "transactionHash": "0x76e085b4e0bf2197c6ba36693ee0f7f6e809bff5b96c7631044840e88645b074",
+        "address": "0x4b374358ad7Cafe246f2Cf51b1164885ed3D743d",
+        "topics": [
+          "0x2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d",
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x0000000000000000000000004f05cf239a8bc2bfda92673bc3c8a87e091b6d97",
+          "0x0000000000000000000000006f889e3fce9b13fe8cefa068a48f4074292e663c"
+        ],
+        "data": "0x",
+        "logIndex": 14,
+        "blockHash": "0x794d204b169b49fa485df0f63a031d6cc0a17a2339e77f0b8ac6d59ad765c3aa"
+      },
+      {
+        "transactionIndex": 2,
+        "blockNumber": 70521294,
+        "transactionHash": "0x76e085b4e0bf2197c6ba36693ee0f7f6e809bff5b96c7631044840e88645b074",
+        "address": "0x513b37DEefF647C4836ACCc1918De68d7b9dA8b4",
+        "topics": [
+          "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+          "0x0000000000000000000000006f889e3fce9b13fe8cefa068a48f4074292e663c",
+          "0x0000000000000000000000004b374358ad7cafe246f2cf51b1164885ed3d743d"
+        ],
+        "data": "0x",
+        "logIndex": 15,
+        "blockHash": "0x794d204b169b49fa485df0f63a031d6cc0a17a2339e77f0b8ac6d59ad765c3aa"
+      },
+      {
+        "transactionIndex": 2,
+        "blockNumber": 70521294,
+        "transactionHash": "0x76e085b4e0bf2197c6ba36693ee0f7f6e809bff5b96c7631044840e88645b074",
+        "address": "0x468713C658978b3F6600A5379F871242fd553554",
+        "topics": [
+          "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+          "0x0000000000000000000000006f889e3fce9b13fe8cefa068a48f4074292e663c",
+          "0x0000000000000000000000004b374358ad7cafe246f2cf51b1164885ed3d743d"
+        ],
+        "data": "0x",
+        "logIndex": 16,
+        "blockHash": "0x794d204b169b49fa485df0f63a031d6cc0a17a2339e77f0b8ac6d59ad765c3aa"
+      },
+      {
+        "transactionIndex": 2,
+        "blockNumber": 70521294,
+        "transactionHash": "0x76e085b4e0bf2197c6ba36693ee0f7f6e809bff5b96c7631044840e88645b074",
+        "address": "0x6F889e3fCE9B13fe8cefA068a48F4074292E663c",
+        "topics": ["0xe56f19ada061bf6161817694d647d94134afe9d3e877db1d8118b3012b744635"],
+        "data": "0x0000000000000000000000004b374358ad7cafe246f2cf51b1164885ed3d743d000000000000000000000000513b37deeff647c4836accc1918de68d7b9da8b4000000000000000000000000468713c658978b3f6600a5379f871242fd55355400000000000000000000000000000000000000000000000002501e734690aaaa0000000000000000000000000000000000000000000000000b90984060d355550000000000000000000000000000000000000000000000000000000000000005000000000000000000000000000000000000000000000000000000000000001900000000000000000000000000000000000000000000000000000000644f0100",
+        "logIndex": 17,
+        "blockHash": "0x794d204b169b49fa485df0f63a031d6cc0a17a2339e77f0b8ac6d59ad765c3aa"
+      }
+    ],
+    "blockNumber": 70521294,
+    "cumulativeGasUsed": "6449385",
+    "status": 1,
+    "byzantium": true
+  },
+  "numDeployments": 1
+}

@@ -1,0 +1,45 @@
+name: Cleanup Infura pins
+
+on:
+  schedule:
+    - cron: 17 3 * * 0
+  workflow_dispatch:
+
+jobs:
+  cleanup_infura:
+    runs-on: ubuntu-latest
+    environment: IPFS
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Restore node_modules cache
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Use NodeJS 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Setup npm
+        run: |
+          npm set @prepo-io:registry=https://npm.pkg.github.com/prepo-io
+          npm set "//npm.pkg.github.com/:_authToken=${{ secrets.PREPO_PACKAGES_TOKEN }}"
+
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Cleanup Infura Pins
+        working-directory: apps/frontend/core-dapp
+        env:
+          IPFS_DEPLOY_INFURA__PROJECT_ID: ${{ secrets.IPFS_DEPLOY_INFURA__PROJECT_ID }}
+          IPFS_DEPLOY_INFURA__PROJECT_SECRET: ${{ secrets.IPFS_DEPLOY_INFURA__PROJECT_SECRET }}
+          # TODO increase this
+          # Starting with a low limit to ensure that this works properly, but
+          # we should increase it as there is no upside to keeping <200 pins
+          MAX_PINS: 5
+        run: yarn node ./internals/cleanup-infura-pins.mjs

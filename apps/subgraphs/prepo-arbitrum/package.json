@@ -1,0 +1,29 @@
+{
+  "name": "prepo-arbitrum",
+  "version": "1.0.0",
+  "description": "prePO data with subgraph",
+  "scripts": {
+    "build": "graph build",
+    "deploy": "graph deploy --product hosted-service chrisling-dev/prepo-arbitrum",
+    "deploy:test": "graph deploy --product hosted-service chrisling-dev/prepo-arbitrum-test",
+    "deploy:studio": "graph deploy --studio prepo-arbitrum",
+    "codegen": "graph codegen --output-dir src/generated/types",
+    "gql:compile": "get-graphql-schema https://api.studio.thegraph.com/query/34409/prepo-arbitrum/v0.0.2 > src/generated/schema.gql",
+    "gql:compile-test": "get-graphql-schema https://api.thegraph.com/subgraphs/name/chrisling-dev/prepo-arbitrum > src/generated/schema-test.gql"
+  },
+  "devDependencies": {
+    "@graphprotocol/graph-cli": "0.43.0",
+    "config": "*",
+    "get-graphql-schema": "2.1.2",
+    "tsconfig": "*",
+    "typescript": "4.7.3"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "yarn": "1.x"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-ts": "0.27.0",
+    "prepo-constants": "*"
+  }
+}

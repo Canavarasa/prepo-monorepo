@@ -1,0 +1,6 @@
+{
+    "name": "@prepo-shared-contracts/contracts",
+    "version": "0.0.0",
+    "files": ["**/*.sol"],
+    "description": "prePO Shared smart contracts"
+}

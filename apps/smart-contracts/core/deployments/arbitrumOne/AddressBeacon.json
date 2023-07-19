@@ -1,0 +1,262 @@
+{
+  "address": "0x3590AF7125A77B8dB0276B70FbBF085366255AF0",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "key",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "addr",
+          "type": "address"
+        }
+      ],
+      "name": "AddressChange",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousNominee",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newNominee",
+          "type": "address"
+        }
+      ],
+      "name": "NomineeUpdate",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "acceptOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "key",
+          "type": "bytes32"
+        }
+      ],
+      "name": "get",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getNominee",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "key",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "addr",
+          "type": "address"
+        }
+      ],
+      "name": "set",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "nominee",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0xcd51e1974292a90699146433e6c0c99525fbdab92a119c230e6b176a898bcd0c",
+  "receipt": {
+    "to": null,
+    "from": "0x4F05Cf239a8BC2bfdA92673bC3c8a87E091b6D97",
+    "contractAddress": "0x3590AF7125A77B8dB0276B70FbBF085366255AF0",
+    "transactionIndex": 2,
+    "gasUsed": "2242703",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020000000000000000000001000000000000000000000000000000000000020000000000000020000800000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002000000000000000002000000000000000000000000000000000000004000000000020000000000100000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0xbaa71b61f526eeee6d0a88c045ca937e68f12891fa4afb46abc21c496128a754",
+    "transactionHash": "0xcd51e1974292a90699146433e6c0c99525fbdab92a119c230e6b176a898bcd0c",
+    "logs": [
+      {
+        "transactionIndex": 2,
+        "blockNumber": 99217584,
+        "transactionHash": "0xcd51e1974292a90699146433e6c0c99525fbdab92a119c230e6b176a898bcd0c",
+        "address": "0x3590AF7125A77B8dB0276B70FbBF085366255AF0",
+        "topics": [
+          "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x0000000000000000000000004f05cf239a8bc2bfda92673bc3c8a87e091b6d97"
+        ],
+        "data": "0x",
+        "logIndex": 5,
+        "blockHash": "0xbaa71b61f526eeee6d0a88c045ca937e68f12891fa4afb46abc21c496128a754"
+      }
+    ],
+    "blockNumber": 99217584,
+    "cumulativeGasUsed": "2712463",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [],
+  "numDeployments": 1,
+  "solcInputHash": "84b86c455dfe286363523437f420d411",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.7+commit.e28d00a7\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"bytes32\",\"name\":\"key\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"AddressChange\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousNominee\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newNominee\",\"type\":\"address\"}],\"name\":\"NomineeUpdate\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"acceptOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"get\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getNominee\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"key\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"set\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"nominee\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"acceptOwnership()\":{\"details\":\"Only callable by the current nominee. Sets nominee back to zero address.\"},\"getNominee()\":{\"returns\":{\"_0\":\"The current nominee\"}},\"owner()\":{\"details\":\"Returns the address of the current owner.\"}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"acceptOwnership()\":{\"notice\":\"Accepts ownership nomination.\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/AddressBeacon.sol\":\"AddressBeacon\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/access/Ownable.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v4.7.0) (access/Ownable.sol)\\n\\npragma solidity ^0.8.0;\\n\\nimport \\\"../utils/Context.sol\\\";\\n\\n/**\\n * @dev Contract module which provides a basic access control mechanism, where\\n * there is an account (an owner) that can be granted exclusive access to\\n * specific functions.\\n *\\n * By default, the owner account will be the one that deploys the contract. This\\n * can later be changed with {transferOwnership}.\\n *\\n * This module is used through inheritance. It will make available the modifier\\n * `onlyOwner`, which can be applied to your functions to restrict their use to\\n * the owner.\\n */\\nabstract contract Ownable is Context {\\n    address private _owner;\\n\\n    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);\\n\\n    /**\\n     * @dev Initializes the contract setting the deployer as the initial owner.\\n     */\\n    constructor() {\\n        _transferOwnership(_msgSender());\\n    }\\n\\n    /**\\n     * @dev Throws if called by any account other than the owner.\\n     */\\n    modifier onlyOwner() {\\n        _checkOwner();\\n        _;\\n    }\\n\\n    /**\\n     * @dev Returns the address of the current owner.\\n     */\\n    function owner() public view virtual returns (address) {\\n        return _owner;\\n    }\\n\\n    /**\\n     * @dev Throws if the sender is not the owner.\\n     */\\n    function _checkOwner() internal view virtual {\\n        require(owner() == _msgSender(), \\\"Ownable: caller is not the owner\\\");\\n    }\\n\\n    /**\\n     * @dev Leaves the contract without owner. It will not be possible to call\\n     * `onlyOwner` functions anymore. Can only be called by the current owner.\\n     *\\n     * NOTE: Renouncing ownership will leave the contract without an owner,\\n     * thereby removing any functionality that is only available to the owner.\\n     */\\n    function renounceOwnership() public virtual onlyOwner {\\n        _transferOwnership(address(0));\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Can only be called by the current owner.\\n     */\\n    function transferOwnership(address newOwner) public virtual onlyOwner {\\n        require(newOwner != address(0), \\\"Ownable: new owner is the zero address\\\");\\n        _transferOwnership(newOwner);\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Internal function without access restriction.\\n     */\\n    function _transferOwnership(address newOwner) internal virtual {\\n        address oldOwner = _owner;\\n        _owner = newOwner;\\n        emit OwnershipTransferred(oldOwner, newOwner);\\n    }\\n}\\n\",\"keccak256\":\"0xa94b34880e3c1b0b931662cb1c09e5dfa6662f31cba80e07c5ee71cd135c9673\",\"license\":\"MIT\"},\"@openzeppelin/contracts/utils/Context.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts v4.4.1 (utils/Context.sol)\\n\\npragma solidity ^0.8.0;\\n\\n/**\\n * @dev Provides information about the current execution context, including the\\n * sender of the transaction and its data. While these are generally available\\n * via msg.sender and msg.data, they should not be accessed in such a direct\\n * manner, since when dealing with meta-transactions the account sending and\\n * paying for execution may not be the actual sender (as far as an application\\n * is concerned).\\n *\\n * This contract is only required for intermediate, library-like contracts.\\n */\\nabstract contract Context {\\n    function _msgSender() internal view virtual returns (address) {\\n        return msg.sender;\\n    }\\n\\n    function _msgData() internal view virtual returns (bytes calldata) {\\n        return msg.data;\\n    }\\n}\\n\",\"keccak256\":\"0xe2e337e6dde9ef6b680e07338c493ebea1b5fd09b43424112868e9cc1706bca7\",\"license\":\"MIT\"},\"contracts/AddressBeacon.sol\":{\"content\":\"// SPDX-License-Identifier: AGPL-3.0\\npragma solidity =0.8.7;\\n\\nimport {SafeOwnable} from \\\"prepo-shared-contracts/contracts/SafeOwnable.sol\\\";\\nimport {IAddressBeacon} from \\\"prepo-shared-contracts/contracts/interfaces/IAddressBeacon.sol\\\";\\n\\ncontract AddressBeacon is IAddressBeacon, SafeOwnable {\\n  mapping(bytes32 => address) private _keyToAddress;\\n\\n  function set(bytes32 key, address addr) external override onlyOwner {\\n    _keyToAddress[key] = addr;\\n    emit AddressChange(key, addr);\\n  }\\n\\n  function get(bytes32 key) external view override returns (address) {\\n    return _keyToAddress[key];\\n  }\\n}\\n\",\"keccak256\":\"0x5f326320195d31fcd2ac357b7f820e3c07d05d6f43fb582fa0878467bcf9c3d5\",\"license\":\"AGPL-3.0\"},\"prepo-shared-contracts/contracts/SafeOwnable.sol\":{\"content\":\"// SPDX-License-Identifier: AGPL-3.0\\npragma solidity =0.8.7;\\n\\nimport {Ownable} from \\\"@openzeppelin/contracts/access/Ownable.sol\\\";\\nimport {ISafeOwnable} from \\\"./interfaces/ISafeOwnable.sol\\\";\\n\\ncontract SafeOwnable is ISafeOwnable, Ownable {\\n  address private _nominee;\\n\\n  modifier onlyNominee() {\\n    require(_msgSender() == _nominee, \\\"msg.sender != nominee\\\");\\n    _;\\n  }\\n\\n  function transferOwnership(address nominee)\\n    public\\n    virtual\\n    override(ISafeOwnable, Ownable)\\n    onlyOwner\\n  {\\n    _setNominee(nominee);\\n  }\\n\\n  function acceptOwnership() public virtual override onlyNominee {\\n    _transferOwnership(_nominee);\\n    _setNominee(address(0));\\n  }\\n\\n  function renounceOwnership()\\n    public\\n    virtual\\n    override(ISafeOwnable, Ownable)\\n    onlyOwner\\n  {\\n    super.renounceOwnership();\\n    _setNominee(address(0));\\n  }\\n\\n  function getNominee() public view virtual override returns (address) {\\n    return _nominee;\\n  }\\n\\n  function _setNominee(address nominee) internal virtual {\\n    address _oldNominee = _nominee;\\n    _nominee = nominee;\\n    emit NomineeUpdate(_oldNominee, nominee);\\n  }\\n}\\n\",\"keccak256\":\"0x14ff6ff98a27878ff8bcdda000dfbb07bb7e743cb08ceee6251455b2531c27eb\",\"license\":\"AGPL-3.0\"},\"prepo-shared-contracts/contracts/interfaces/IAddressBeacon.sol\":{\"content\":\"// SPDX-License-Identifier: AGPL-3.0\\npragma solidity =0.8.7;\\n\\ninterface IAddressBeacon {\\n  event AddressChange(bytes32 key, address addr);\\n\\n  function set(bytes32 key, address addr) external;\\n\\n  function get(bytes32 key) external view returns (address);\\n}\\n\",\"keccak256\":\"0x6e0adbfc873cd477b776ecdf05fe49075b8443369ad0cfbf1f01d7666c131bc0\",\"license\":\"AGPL-3.0\"},\"prepo-shared-contracts/contracts/interfaces/ISafeOwnable.sol\":{\"content\":\"// SPDX-License-Identifier: AGPL-3.0\\npragma solidity =0.8.7;\\n\\n/**\\n * @notice An extension of OpenZeppelin's `Ownable.sol` contract that requires\\n * an address to be nominated, and then accept that nomination, before\\n * ownership is transferred.\\n */\\ninterface ISafeOwnable {\\n  /**\\n   * @dev Emitted via `transferOwnership()`.\\n   * @param previousNominee The previous nominee\\n   * @param newNominee The new nominee\\n   */\\n  event NomineeUpdate(\\n    address indexed previousNominee,\\n    address indexed newNominee\\n  );\\n\\n  /**\\n   * @notice Nominates an address to be owner of the contract.\\n   * @dev Only callable by `owner()`.\\n   * @param nominee The address that will be nominated\\n   */\\n  function transferOwnership(address nominee) external;\\n\\n  /**\\n   * @notice Renounces ownership of contract and leaves the contract\\n   * without any owner.\\n   * @dev Only callable by `owner()`.\\n   * Sets nominee back to zero address.\\n   * It will not be possible to call `onlyOwner` functions anymore.\\n   */\\n  function renounceOwnership() external;\\n\\n  /**\\n   * @notice Accepts ownership nomination.\\n   * @dev Only callable by the current nominee. Sets nominee back to zero\\n   * address.\\n   */\\n  function acceptOwnership() external;\\n\\n  /// @return The current nominee\\n  function getNominee() external view returns (address);\\n}\\n\",\"keccak256\":\"0x50f8ea0098b1205f0e346f320aed8ea83d2de8fcbf08264b2e4fcefcc25c7780\",\"license\":\"AGPL-3.0\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b5061001a3361001f565b61006f565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b6103f78061007e6000396000f3fe608060405234801561001057600080fd5b506004361061007d5760003560e01c80638eaa6ac01161005b5780638eaa6ac0146100bd578063b6ca0b63146100e6578063ba44593c146100f7578063f2fde38b1461010a57600080fd5b8063715018a61461008257806379ba50971461008c5780638da5cb5b14610094575b600080fd5b61008a61011d565b005b61008a610139565b6000546001600160a01b03165b6040516001600160a01b03909116815260200160405180910390f35b6100a16100cb36600461037c565b6000908152600260205260409020546001600160a01b031690565b6001546001600160a01b03166100a1565b61008a610105366004610395565b6101ae565b61008a61011836600461035a565b61021c565b610125610230565b61012d61028a565b610137600061029c565b565b6001546001600160a01b0316336001600160a01b0316146101995760405162461bcd60e51b81526020600482015260156024820152746d73672e73656e64657220213d206e6f6d696e656560581b60448201526064015b60405180910390fd5b60015461012d906001600160a01b03166102ee565b6101b6610230565b60008281526002602090815260409182902080546001600160a01b0319166001600160a01b0385169081179091558251858152918201527f95064b3a681955b431e4558093e3483d0c3e6cc96e03aaea2df5e35e79704feb910160405180910390a15050565b610224610230565b61022d8161029c565b50565b6000546001600160a01b031633146101375760405162461bcd60e51b815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65726044820152606401610190565b610292610230565b61013760006102ee565b600180546001600160a01b038381166001600160a01b0319831681179093556040519116919082907fe7624d724357e317f51579affee5050a97c60b060e513e69aa8a1a35fb3315a790600090a35050565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b80356001600160a01b038116811461035557600080fd5b919050565b60006020828403121561036c57600080fd5b6103758261033e565b9392505050565b60006020828403121561038e57600080fd5b5035919050565b600080604083850312156103a857600080fd5b823591506103b86020840161033e565b9050925092905056fea26469706673582212203c656f5b923ca144ef7107b3ed7f23da46997bd6537efe0eab8618cee547c22564736f6c63430008070033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b506004361061007d5760003560e01c80638eaa6ac01161005b5780638eaa6ac0146100bd578063b6ca0b63146100e6578063ba44593c146100f7578063f2fde38b1461010a57600080fd5b8063715018a61461008257806379ba50971461008c5780638da5cb5b14610094575b600080fd5b61008a61011d565b005b61008a610139565b6000546001600160a01b03165b6040516001600160a01b03909116815260200160405180910390f35b6100a16100cb36600461037c565b6000908152600260205260409020546001600160a01b031690565b6001546001600160a01b03166100a1565b61008a610105366004610395565b6101ae565b61008a61011836600461035a565b61021c565b610125610230565b61012d61028a565b610137600061029c565b565b6001546001600160a01b0316336001600160a01b0316146101995760405162461bcd60e51b81526020600482015260156024820152746d73672e73656e64657220213d206e6f6d696e656560581b60448201526064015b60405180910390fd5b60015461012d906001600160a01b03166102ee565b6101b6610230565b60008281526002602090815260409182902080546001600160a01b0319166001600160a01b0385169081179091558251858152918201527f95064b3a681955b431e4558093e3483d0c3e6cc96e03aaea2df5e35e79704feb910160405180910390a15050565b610224610230565b61022d8161029c565b50565b6000546001600160a01b031633146101375760405162461bcd60e51b815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65726044820152606401610190565b610292610230565b61013760006102ee565b600180546001600160a01b038381166001600160a01b0319831681179093556040519116919082907fe7624d724357e317f51579affee5050a97c60b060e513e69aa8a1a35fb3315a790600090a35050565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b80356001600160a01b038116811461035557600080fd5b919050565b60006020828403121561036c57600080fd5b6103758261033e565b9392505050565b60006020828403121561038e57600080fd5b5035919050565b600080604083850312156103a857600080fd5b823591506103b86020840161033e565b9050925092905056fea26469706673582212203c656f5b923ca144ef7107b3ed7f23da46997bd6537efe0eab8618cee547c22564736f6c63430008070033",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {
+      "acceptOwnership()": {
+        "details": "Only callable by the current nominee. Sets nominee back to zero address."
+      },
+      "getNominee()": {
+        "returns": {
+          "_0": "The current nominee"
+        }
+      },
+      "owner()": {
+        "details": "Returns the address of the current owner."
+      }
+    },
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {
+      "acceptOwnership()": {
+        "notice": "Accepts ownership nomination."
+      }
+    },
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 4929,
+        "contract": "contracts/AddressBeacon.sol:AddressBeacon",
+        "label": "_owner",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_address"
+      },
+      {
+        "astId": 20063,
+        "contract": "contracts/AddressBeacon.sol:AddressBeacon",
+        "label": "_nominee",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_address"
+      },
+      {
+        "astId": 11547,
+        "contract": "contracts/AddressBeacon.sol:AddressBeacon",
+        "label": "_keyToAddress",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_mapping(t_bytes32,t_address)"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_bytes32": {
+        "encoding": "inplace",
+        "label": "bytes32",
+        "numberOfBytes": "32"
+      },
+      "t_mapping(t_bytes32,t_address)": {
+        "encoding": "mapping",
+        "key": "t_bytes32",
+        "label": "mapping(bytes32 => address)",
+        "numberOfBytes": "32",
+        "value": "t_address"
+      }
+    }
+  }
+}

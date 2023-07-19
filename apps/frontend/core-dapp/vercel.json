@@ -1,0 +1,9 @@
+{
+  "github": {
+    "silent": true
+  },
+  "framework": "nextjs",
+  "installCommand": "cd ../../../ && yarn install",
+  "buildCommand": "npx turbo run export --filter=core-dapp",
+  "ignoreCommand": "npx turbo-ignore core-dapp --task=build --fallback=HEAD^"
+}

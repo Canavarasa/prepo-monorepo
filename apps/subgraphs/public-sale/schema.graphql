@@ -1,0 +1,21 @@
+type Participant @entity {
+  # participant address
+  id: ID!
+  # amount user bought
+  amount: BigInt!
+}
+
+type Purchase @entity {
+  # tx hash
+  id: ID!
+  # purchase address
+  purchaser: String!
+  # recipient address
+  recipient: String!
+  # PPO Amount
+  amount: BigInt!
+  # price of PPO when tx occured
+  price: BigInt!
+  # transaction time
+  timestamp: BigInt!
+}

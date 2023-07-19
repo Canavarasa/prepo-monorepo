@@ -1,0 +1,367 @@
+{
+  "address": "0x0fBBfd902a379b50E869f279758463Fc26Ac02ad",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "contract IUniswapV3Oracle",
+          "name": "oracle",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "baseToken",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "quoteToken",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint128",
+          "name": "amount",
+          "type": "uint128"
+        }
+      ],
+      "name": "BaseAmountChange",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousNominee",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newNominee",
+          "type": "address"
+        }
+      ],
+      "name": "NomineeUpdate",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint32",
+          "name": "period",
+          "type": "uint32"
+        }
+      ],
+      "name": "ObservationPeriodChange",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "acceptOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "get",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "quoteAmount",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getBaseAmount",
+      "outputs": [
+        {
+          "internalType": "uint128",
+          "name": "",
+          "type": "uint128"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getBaseToken",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getNominee",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getObservationPeriod",
+      "outputs": [
+        {
+          "internalType": "uint32",
+          "name": "",
+          "type": "uint32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getOracle",
+      "outputs": [
+        {
+          "internalType": "contract IUniswapV3Oracle",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getQuoteToken",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint128",
+          "name": "baseAmount",
+          "type": "uint128"
+        }
+      ],
+      "name": "setBaseAmount",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint32",
+          "name": "observationPeriod",
+          "type": "uint32"
+        }
+      ],
+      "name": "setObservationPeriod",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "nominee",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0x505d9a37dfece014c25b173ddf97eedb483990cd9c32343cbeacf5bad863bbe8",
+  "receipt": {
+    "to": null,
+    "from": "0x4F05Cf239a8BC2bfdA92673bC3c8a87E091b6D97",
+    "contractAddress": "0x0fBBfd902a379b50E869f279758463Fc26Ac02ad",
+    "transactionIndex": 3,
+    "gasUsed": "4080373",
+    "logsBloom": "0x00000000000000000000000000000000000000020000000000800000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000004000000020000000000000000000800000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002000000000000000002000000000000000000000000000000000000000000000000020000000000100000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0x781a7b43875cba40290e27ecf580da9c9cb55537d763e0d5430e074a69e84ae2",
+    "transactionHash": "0x505d9a37dfece014c25b173ddf97eedb483990cd9c32343cbeacf5bad863bbe8",
+    "logs": [
+      {
+        "transactionIndex": 3,
+        "blockNumber": 67546874,
+        "transactionHash": "0x505d9a37dfece014c25b173ddf97eedb483990cd9c32343cbeacf5bad863bbe8",
+        "address": "0x0fBBfd902a379b50E869f279758463Fc26Ac02ad",
+        "topics": [
+          "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x0000000000000000000000004f05cf239a8bc2bfda92673bc3c8a87e091b6d97"
+        ],
+        "data": "0x",
+        "logIndex": 10,
+        "blockHash": "0x781a7b43875cba40290e27ecf580da9c9cb55537d763e0d5430e074a69e84ae2"
+      }
+    ],
+    "blockNumber": 67546874,
+    "cumulativeGasUsed": "5450067",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [
+    "0xA8C2682a616cC8c5848d531793678D945388955f",
+    "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
+    "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"
+  ],
+  "numDeployments": 1,
+  "solcInputHash": "026479a94a0487036a93211e4dc69f86",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.7+commit.e28d00a7\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"contract IUniswapV3Oracle\",\"name\":\"oracle\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"baseToken\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"quoteToken\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint128\",\"name\":\"amount\",\"type\":\"uint128\"}],\"name\":\"BaseAmountChange\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousNominee\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newNominee\",\"type\":\"address\"}],\"name\":\"NomineeUpdate\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint32\",\"name\":\"period\",\"type\":\"uint32\"}],\"name\":\"ObservationPeriodChange\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"acceptOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"get\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"quoteAmount\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getBaseAmount\",\"outputs\":[{\"internalType\":\"uint128\",\"name\":\"\",\"type\":\"uint128\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getBaseToken\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getNominee\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getObservationPeriod\",\"outputs\":[{\"internalType\":\"uint32\",\"name\":\"\",\"type\":\"uint32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getOracle\",\"outputs\":[{\"internalType\":\"contract IUniswapV3Oracle\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getQuoteToken\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"baseAmount\",\"type\":\"uint128\"}],\"name\":\"setBaseAmount\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint32\",\"name\":\"observationPeriod\",\"type\":\"uint32\"}],\"name\":\"setObservationPeriod\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"nominee\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"acceptOwnership()\":{\"details\":\"Only callable by the current nominee. Sets nominee back to zero address.\"},\"getNominee()\":{\"returns\":{\"_0\":\"The current nominee\"}},\"owner()\":{\"details\":\"Returns the address of the current owner.\"}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"acceptOwnership()\":{\"notice\":\"Accepts ownership nomination.\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/UniswapV3OracleUintValue.sol\":\"UniswapV3OracleUintValue\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/access/Ownable.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v4.7.0) (access/Ownable.sol)\\n\\npragma solidity ^0.8.0;\\n\\nimport \\\"../utils/Context.sol\\\";\\n\\n/**\\n * @dev Contract module which provides a basic access control mechanism, where\\n * there is an account (an owner) that can be granted exclusive access to\\n * specific functions.\\n *\\n * By default, the owner account will be the one that deploys the contract. This\\n * can later be changed with {transferOwnership}.\\n *\\n * This module is used through inheritance. It will make available the modifier\\n * `onlyOwner`, which can be applied to your functions to restrict their use to\\n * the owner.\\n */\\nabstract contract Ownable is Context {\\n    address private _owner;\\n\\n    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);\\n\\n    /**\\n     * @dev Initializes the contract setting the deployer as the initial owner.\\n     */\\n    constructor() {\\n        _transferOwnership(_msgSender());\\n    }\\n\\n    /**\\n     * @dev Throws if called by any account other than the owner.\\n     */\\n    modifier onlyOwner() {\\n        _checkOwner();\\n        _;\\n    }\\n\\n    /**\\n     * @dev Returns the address of the current owner.\\n     */\\n    function owner() public view virtual returns (address) {\\n        return _owner;\\n    }\\n\\n    /**\\n     * @dev Throws if the sender is not the owner.\\n     */\\n    function _checkOwner() internal view virtual {\\n        require(owner() == _msgSender(), \\\"Ownable: caller is not the owner\\\");\\n    }\\n\\n    /**\\n     * @dev Leaves the contract without owner. It will not be possible to call\\n     * `onlyOwner` functions anymore. Can only be called by the current owner.\\n     *\\n     * NOTE: Renouncing ownership will leave the contract without an owner,\\n     * thereby removing any functionality that is only available to the owner.\\n     */\\n    function renounceOwnership() public virtual onlyOwner {\\n        _transferOwnership(address(0));\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Can only be called by the current owner.\\n     */\\n    function transferOwnership(address newOwner) public virtual onlyOwner {\\n        require(newOwner != address(0), \\\"Ownable: new owner is the zero address\\\");\\n        _transferOwnership(newOwner);\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Internal function without access restriction.\\n     */\\n    function _transferOwnership(address newOwner) internal virtual {\\n        address oldOwner = _owner;\\n        _owner = newOwner;\\n        emit OwnershipTransferred(oldOwner, newOwner);\\n    }\\n}\\n\",\"keccak256\":\"0xa94b34880e3c1b0b931662cb1c09e5dfa6662f31cba80e07c5ee71cd135c9673\",\"license\":\"MIT\"},\"@openzeppelin/contracts/utils/Context.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts v4.4.1 (utils/Context.sol)\\n\\npragma solidity ^0.8.0;\\n\\n/**\\n * @dev Provides information about the current execution context, including the\\n * sender of the transaction and its data. While these are generally available\\n * via msg.sender and msg.data, they should not be accessed in such a direct\\n * manner, since when dealing with meta-transactions the account sending and\\n * paying for execution may not be the actual sender (as far as an application\\n * is concerned).\\n *\\n * This contract is only required for intermediate, library-like contracts.\\n */\\nabstract contract Context {\\n    function _msgSender() internal view virtual returns (address) {\\n        return msg.sender;\\n    }\\n\\n    function _msgData() internal view virtual returns (bytes calldata) {\\n        return msg.data;\\n    }\\n}\\n\",\"keccak256\":\"0xe2e337e6dde9ef6b680e07338c493ebea1b5fd09b43424112868e9cc1706bca7\",\"license\":\"MIT\"},\"@uniswap/v3-core/contracts/interfaces/IUniswapV3Factory.sol\":{\"content\":\"// SPDX-License-Identifier: GPL-2.0-or-later\\npragma solidity >=0.5.0;\\n\\n/// @title The interface for the Uniswap V3 Factory\\n/// @notice The Uniswap V3 Factory facilitates creation of Uniswap V3 pools and control over the protocol fees\\ninterface IUniswapV3Factory {\\n    /// @notice Emitted when the owner of the factory is changed\\n    /// @param oldOwner The owner before the owner was changed\\n    /// @param newOwner The owner after the owner was changed\\n    event OwnerChanged(address indexed oldOwner, address indexed newOwner);\\n\\n    /// @notice Emitted when a pool is created\\n    /// @param token0 The first token of the pool by address sort order\\n    /// @param token1 The second token of the pool by address sort order\\n    /// @param fee The fee collected upon every swap in the pool, denominated in hundredths of a bip\\n    /// @param tickSpacing The minimum number of ticks between initialized ticks\\n    /// @param pool The address of the created pool\\n    event PoolCreated(\\n        address indexed token0,\\n        address indexed token1,\\n        uint24 indexed fee,\\n        int24 tickSpacing,\\n        address pool\\n    );\\n\\n    /// @notice Emitted when a new fee amount is enabled for pool creation via the factory\\n    /// @param fee The enabled fee, denominated in hundredths of a bip\\n    /// @param tickSpacing The minimum number of ticks between initialized ticks for pools created with the given fee\\n    event FeeAmountEnabled(uint24 indexed fee, int24 indexed tickSpacing);\\n\\n    /// @notice Returns the current owner of the factory\\n    /// @dev Can be changed by the current owner via setOwner\\n    /// @return The address of the factory owner\\n    function owner() external view returns (address);\\n\\n    /// @notice Returns the tick spacing for a given fee amount, if enabled, or 0 if not enabled\\n    /// @dev A fee amount can never be removed, so this value should be hard coded or cached in the calling context\\n    /// @param fee The enabled fee, denominated in hundredths of a bip. Returns 0 in case of unenabled fee\\n    /// @return The tick spacing\\n    function feeAmountTickSpacing(uint24 fee) external view returns (int24);\\n\\n    /// @notice Returns the pool address for a given pair of tokens and a fee, or address 0 if it does not exist\\n    /// @dev tokenA and tokenB may be passed in either token0/token1 or token1/token0 order\\n    /// @param tokenA The contract address of either token0 or token1\\n    /// @param tokenB The contract address of the other token\\n    /// @param fee The fee collected upon every swap in the pool, denominated in hundredths of a bip\\n    /// @return pool The pool address\\n    function getPool(\\n        address tokenA,\\n        address tokenB,\\n        uint24 fee\\n    ) external view returns (address pool);\\n\\n    /// @notice Creates a pool for the given two tokens and fee\\n    /// @param tokenA One of the two tokens in the desired pool\\n    /// @param tokenB The other of the two tokens in the desired pool\\n    /// @param fee The desired fee for the pool\\n    /// @dev tokenA and tokenB may be passed in either order: token0/token1 or token1/token0. tickSpacing is retrieved\\n    /// from the fee. The call will revert if the pool already exists, the fee is invalid, or the token arguments\\n    /// are invalid.\\n    /// @return pool The address of the newly created pool\\n    function createPool(\\n        address tokenA,\\n        address tokenB,\\n        uint24 fee\\n    ) external returns (address pool);\\n\\n    /// @notice Updates the owner of the factory\\n    /// @dev Must be called by the current owner\\n    /// @param _owner The new owner of the factory\\n    function setOwner(address _owner) external;\\n\\n    /// @notice Enables a fee amount with the given tickSpacing\\n    /// @dev Fee amounts may never be removed once enabled\\n    /// @param fee The fee amount to enable, denominated in hundredths of a bip (i.e. 1e-6)\\n    /// @param tickSpacing The spacing between ticks to be enforced for all pools created with the given fee amount\\n    function enableFeeAmount(uint24 fee, int24 tickSpacing) external;\\n}\\n\",\"keccak256\":\"0xcc3d0c93fc9ac0febbe09f941b465b57f750bcf3b48432da0b97dc289cfdc489\",\"license\":\"GPL-2.0-or-later\"},\"contracts/UniswapV3OracleUintValue.sol\":{\"content\":\"// SPDX-License-Identifier: AGPL-3.0\\npragma solidity =0.8.7;\\n\\nimport \\\"prepo-shared-contracts/contracts/SafeOwnable.sol\\\";\\nimport \\\"prepo-shared-contracts/contracts/interfaces/IUniswapV3OracleUintValue.sol\\\";\\n\\ncontract UniswapV3OracleUintValue is IUniswapV3OracleUintValue, SafeOwnable {\\n  IUniswapV3Oracle private immutable _oracle;\\n  address private immutable _baseToken;\\n  address private immutable _quoteToken;\\n  uint32 private _observationPeriod;\\n  uint128 private _baseAmount;\\n\\n  constructor(\\n    IUniswapV3Oracle oracle,\\n    address baseToken,\\n    address quoteToken\\n  ) {\\n    _oracle = oracle;\\n    _baseToken = baseToken;\\n    _quoteToken = quoteToken;\\n  }\\n\\n  function setObservationPeriod(uint32 observationPeriod)\\n    external\\n    override\\n    onlyOwner\\n  {\\n    _observationPeriod = observationPeriod;\\n    emit ObservationPeriodChange(observationPeriod);\\n  }\\n\\n  function setBaseAmount(uint128 baseAmount) external override onlyOwner {\\n    _baseAmount = baseAmount;\\n    emit BaseAmountChange(baseAmount);\\n  }\\n\\n  function get() external view override returns (uint256 quoteAmount) {\\n    (quoteAmount, ) = _oracle.quoteAllAvailablePoolsWithTimePeriod(\\n      _baseAmount,\\n      _baseToken,\\n      _quoteToken,\\n      _observationPeriod\\n    );\\n  }\\n\\n  function getOracle() external view override returns (IUniswapV3Oracle) {\\n    return _oracle;\\n  }\\n\\n  function getBaseToken() external view override returns (address) {\\n    return _baseToken;\\n  }\\n\\n  function getQuoteToken() external view override returns (address) {\\n    return _quoteToken;\\n  }\\n\\n  function getObservationPeriod() external view override returns (uint32) {\\n    return _observationPeriod;\\n  }\\n\\n  function getBaseAmount() external view override returns (uint128) {\\n    return _baseAmount;\\n  }\\n}\\n\",\"keccak256\":\"0x43e41d7b42132ac4a014008b48d0a6480e926794aa607fd2c3270a2c3aa0ba8e\",\"license\":\"AGPL-3.0\"},\"prepo-shared-contracts/contracts/SafeOwnable.sol\":{\"content\":\"// SPDX-License-Identifier: AGPL-3.0\\npragma solidity =0.8.7;\\n\\nimport \\\"@openzeppelin/contracts/access/Ownable.sol\\\";\\nimport \\\"./interfaces/ISafeOwnable.sol\\\";\\n\\ncontract SafeOwnable is ISafeOwnable, Ownable {\\n  address private _nominee;\\n\\n  modifier onlyNominee() {\\n    require(_msgSender() == _nominee, \\\"msg.sender != nominee\\\");\\n    _;\\n  }\\n\\n  function transferOwnership(address nominee)\\n    public\\n    virtual\\n    override(ISafeOwnable, Ownable)\\n    onlyOwner\\n  {\\n    _setNominee(nominee);\\n  }\\n\\n  function acceptOwnership() public virtual override onlyNominee {\\n    _transferOwnership(_nominee);\\n    _setNominee(address(0));\\n  }\\n\\n  function renounceOwnership()\\n    public\\n    virtual\\n    override(ISafeOwnable, Ownable)\\n    onlyOwner\\n  {\\n    super.renounceOwnership();\\n    _setNominee(address(0));\\n  }\\n\\n  function getNominee() public view virtual override returns (address) {\\n    return _nominee;\\n  }\\n\\n  function _setNominee(address nominee) internal virtual {\\n    address _oldNominee = _nominee;\\n    _nominee = nominee;\\n    emit NomineeUpdate(_oldNominee, nominee);\\n  }\\n}\\n\",\"keccak256\":\"0xbb0a5407dcd2bc88279cdb40e03fd71e0e6663fced7202056672f12d74e110db\",\"license\":\"AGPL-3.0\"},\"prepo-shared-contracts/contracts/interfaces/ISafeOwnable.sol\":{\"content\":\"// SPDX-License-Identifier: AGPL-3.0\\npragma solidity =0.8.7;\\n\\n/**\\n * @notice An extension of OpenZeppelin's `Ownable.sol` contract that requires\\n * an address to be nominated, and then accept that nomination, before\\n * ownership is transferred.\\n */\\ninterface ISafeOwnable {\\n  /**\\n   * @dev Emitted via `transferOwnership()`.\\n   * @param previousNominee The previous nominee\\n   * @param newNominee The new nominee\\n   */\\n  event NomineeUpdate(\\n    address indexed previousNominee,\\n    address indexed newNominee\\n  );\\n\\n  /**\\n   * @notice Nominates an address to be owner of the contract.\\n   * @dev Only callable by `owner()`.\\n   * @param nominee The address that will be nominated\\n   */\\n  function transferOwnership(address nominee) external;\\n\\n  /**\\n   * @notice Renounces ownership of contract and leaves the contract\\n   * without any owner.\\n   * @dev Only callable by `owner()`.\\n   * Sets nominee back to zero address.\\n   * It will not be possible to call `onlyOwner` functions anymore.\\n   */\\n  function renounceOwnership() external;\\n\\n  /**\\n   * @notice Accepts ownership nomination.\\n   * @dev Only callable by the current nominee. Sets nominee back to zero\\n   * address.\\n   */\\n  function acceptOwnership() external;\\n\\n  /// @return The current nominee\\n  function getNominee() external view returns (address);\\n}\\n\",\"keccak256\":\"0x50f8ea0098b1205f0e346f320aed8ea83d2de8fcbf08264b2e4fcefcc25c7780\",\"license\":\"AGPL-3.0\"},\"prepo-shared-contracts/contracts/interfaces/IUintValue.sol\":{\"content\":\"// SPDX-License-Identifier: AGPL-3.0\\npragma solidity =0.8.7;\\n\\ninterface IUintValue {\\n  function get() external view returns (uint256);\\n}\\n\",\"keccak256\":\"0x1b1ba9466eab57f66aa255fd76b50419656b37a4f8fa0ea73d7e0488fd7c45fc\",\"license\":\"AGPL-3.0\"},\"prepo-shared-contracts/contracts/interfaces/IUniswapV3OracleUintValue.sol\":{\"content\":\"// SPDX-License-Identifier: AGPL-3.0\\npragma solidity =0.8.7;\\n\\nimport \\\"./IUintValue.sol\\\";\\nimport \\\"../mean-finance/interfaces/IUniswapV3Oracle.sol\\\";\\n\\ninterface IUniswapV3OracleUintValue is IUintValue {\\n  event ObservationPeriodChange(uint32 period);\\n\\n  event BaseAmountChange(uint128 amount);\\n\\n  function setObservationPeriod(uint32 observationPeriod) external;\\n\\n  function setBaseAmount(uint128 amount) external;\\n\\n  function getOracle() external view returns (IUniswapV3Oracle);\\n\\n  function getBaseToken() external view returns (address);\\n\\n  function getQuoteToken() external view returns (address);\\n\\n  function getObservationPeriod() external view returns (uint32);\\n\\n  function getBaseAmount() external view returns (uint128);\\n}\\n\",\"keccak256\":\"0x7b091856c12db66a045135cf4fefd37591af6e8ed271ab06af9cd18e1a55c973\",\"license\":\"AGPL-3.0\"},\"prepo-shared-contracts/contracts/mean-finance/interfaces/IUniswapV3Oracle.sol\":{\"content\":\"// SPDX-License-Identifier: GPL-2.0-or-later\\npragma solidity =0.8.7;\\n\\nimport \\\"@uniswap/v3-core/contracts/interfaces/IUniswapV3Factory.sol\\\";\\n\\ninterface IUniswapV3Oracle {\\n  function UNISWAP_V3_FACTORY() external view returns (IUniswapV3Factory);\\n\\n  function CARDINALITY_PER_MINUTE() external view returns (uint8);\\n\\n  function supportedFeeTiers() external view returns (uint24[] memory);\\n\\n  function isPairSupported(address tokenA, address tokenB)\\n    external\\n    view\\n    returns (bool);\\n\\n  function getAllPoolsForPair(address tokenA, address tokenB)\\n    external\\n    view\\n    returns (address[] memory);\\n\\n  function quoteAllAvailablePoolsWithTimePeriod(\\n    uint128 baseAmount,\\n    address baseToken,\\n    address quoteToken,\\n    uint32 period\\n  ) external view returns (uint256 quoteAmount, address[] memory queriedPools);\\n\\n  function quoteSpecificFeeTiersWithTimePeriod(\\n    uint128 baseAmount,\\n    address baseToken,\\n    address quoteToken,\\n    uint24[] calldata feeTiers,\\n    uint32 period\\n  ) external view returns (uint256 quoteAmount, address[] memory queriedPools);\\n\\n  function quoteSpecificPoolsWithTimePeriod(\\n    uint128 baseAmount,\\n    address baseToken,\\n    address quoteToken,\\n    address[] calldata pools,\\n    uint32 period\\n  ) external view returns (uint256 quoteAmount);\\n\\n  function prepareAllAvailablePoolsWithTimePeriod(\\n    address tokenA,\\n    address tokenB,\\n    uint32 period\\n  ) external returns (address[] memory preparedPools);\\n\\n  function prepareSpecificFeeTiersWithTimePeriod(\\n    address tokenA,\\n    address tokenB,\\n    uint24[] calldata feeTiers,\\n    uint32 period\\n  ) external returns (address[] memory preparedPools);\\n\\n  function prepareSpecificPoolsWithTimePeriod(\\n    address[] calldata pools,\\n    uint32 period\\n  ) external;\\n\\n  function prepareAllAvailablePoolsWithCardinality(\\n    address tokenA,\\n    address tokenB,\\n    uint16 cardinality\\n  ) external returns (address[] memory preparedPools);\\n\\n  function prepareSpecificFeeTiersWithCardinality(\\n    address tokenA,\\n    address tokenB,\\n    uint24[] calldata feeTiers,\\n    uint16 cardinality\\n  ) external returns (address[] memory preparedPools);\\n\\n  function prepareSpecificPoolsWithCardinality(\\n    address[] calldata pools,\\n    uint16 cardinality\\n  ) external;\\n\\n  function addNewFeeTier(uint24 feeTier) external;\\n}\\n\",\"keccak256\":\"0x044524048093945c90948315f114354bc07cdfb8ba9063c2c17dd0775e8cf8ea\",\"license\":\"GPL-2.0-or-later\"}},\"version\":1}",
+  "bytecode": "0x60e060405234801561001057600080fd5b506040516108cd3803806108cd83398101604081905261002f916100af565b6100383361005f565b6001600160601b0319606093841b811660805291831b821660a05290911b1660c052610114565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b6000806000606084860312156100c457600080fd5b83516100cf816100fc565b60208501519093506100e0816100fc565b60408501519092506100f1816100fc565b809150509250925092565b6001600160a01b038116811461011157600080fd5b50565b60805160601c60a05160601c60c05160601c61076d6101606000396000818160eb01526102de0152600081816101a201526102ad01526000818161016b015261031c015261076d6000f3fe608060405234801561001057600080fd5b50600436106100cf5760003560e01c8063833b1fce1161008c578063b6ca0b6311610066578063b6ca0b63146101c6578063ca71d0f1146101d7578063f1eaebae146101ea578063f2fde38b1461020f57600080fd5b8063833b1fce146101695780638da5cb5b1461018f57806398acd7a6146101a057600080fd5b806333dcbca4146100d45780634a64d67d146100e95780636a5ff66f146101285780636d4ce63c14610143578063715018a61461015957806379ba509714610161575b600080fd5b6100e76100e23660046105e5565b610222565b005b7f00000000000000000000000000000000000000000000000000000000000000005b6040516001600160a01b0390911681526020015b60405180910390f35b6002546040516001600160801b03909116815260200161011f565b61014b610288565b60405190815260200161011f565b6100e76103a2565b6100e76103be565b7f000000000000000000000000000000000000000000000000000000000000000061010b565b6000546001600160a01b031661010b565b7f000000000000000000000000000000000000000000000000000000000000000061010b565b6001546001600160a01b031661010b565b6100e76101e53660046106e6565b610433565b600154600160a01b900463ffffffff1660405163ffffffff909116815260200161011f565b6100e761021d3660046105c1565b61048f565b61022a6104a3565b600280546fffffffffffffffffffffffffffffffff19166001600160801b0383169081179091556040519081527f91b24045e1c14539fb7c7bb8d5a3dafbf55ccd97f72e6356b45fa4f6edf3950d906020015b60405180910390a150565b600254600154604051630757bc8160e01b81526001600160801b0390921660048301527f00000000000000000000000000000000000000000000000000000000000000006001600160a01b0390811660248401527f000000000000000000000000000000000000000000000000000000000000000081166044840152600160a01b90910463ffffffff1660648301526000917f000000000000000000000000000000000000000000000000000000000000000090911690630757bc819060840160006040518083038186803b15801561036057600080fd5b505afa158015610374573d6000803e3d6000fd5b505050506040513d6000823e601f3d908101601f1916820160405261039c919081019061060e565b50919050565b6103aa6104a3565b6103b26104fd565b6103bc600061050f565b565b6001546001600160a01b0316336001600160a01b03161461041e5760405162461bcd60e51b81526020600482015260156024820152746d73672e73656e64657220213d206e6f6d696e656560581b60448201526064015b60405180910390fd5b6001546103b2906001600160a01b0316610561565b61043b6104a3565b6001805463ffffffff60a01b1916600160a01b63ffffffff8416908102919091179091556040519081527fd812e713c674b07e43d52e41856e3a34b842fb6ffa99daa2c252d6d75426f7409060200161027d565b6104976104a3565b6104a08161050f565b50565b6000546001600160a01b031633146103bc5760405162461bcd60e51b815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65726044820152606401610415565b6105056104a3565b6103bc6000610561565b600180546001600160a01b038381166001600160a01b0319831681179093556040519116919082907fe7624d724357e317f51579affee5050a97c60b060e513e69aa8a1a35fb3315a790600090a35050565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b80516105bc81610722565b919050565b6000602082840312156105d357600080fd5b81356105de81610722565b9392505050565b6000602082840312156105f757600080fd5b81356001600160801b03811681146105de57600080fd5b6000806040838503121561062157600080fd5b8251915060208084015167ffffffffffffffff8082111561064157600080fd5b818601915086601f83011261065557600080fd5b8151818111156106675761066761070c565b8060051b604051601f19603f8301168101818110858211171561068c5761068c61070c565b604052828152858101935084860182860187018b10156106ab57600080fd5b600095505b838610156106d5576106c1816105b1565b8552600195909501949386019386016106b0565b508096505050505050509250929050565b6000602082840312156106f857600080fd5b813563ffffffff811681146105de57600080fd5b634e487b7160e01b600052604160045260246000fd5b6001600160a01b03811681146104a057600080fdfea26469706673582212200c99ed90cb0e377940f9e4989b6668785ddc1a1f113074dab8d5faa123d268e864736f6c63430008070033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100cf5760003560e01c8063833b1fce1161008c578063b6ca0b6311610066578063b6ca0b63146101c6578063ca71d0f1146101d7578063f1eaebae146101ea578063f2fde38b1461020f57600080fd5b8063833b1fce146101695780638da5cb5b1461018f57806398acd7a6146101a057600080fd5b806333dcbca4146100d45780634a64d67d146100e95780636a5ff66f146101285780636d4ce63c14610143578063715018a61461015957806379ba509714610161575b600080fd5b6100e76100e23660046105e5565b610222565b005b7f00000000000000000000000000000000000000000000000000000000000000005b6040516001600160a01b0390911681526020015b60405180910390f35b6002546040516001600160801b03909116815260200161011f565b61014b610288565b60405190815260200161011f565b6100e76103a2565b6100e76103be565b7f000000000000000000000000000000000000000000000000000000000000000061010b565b6000546001600160a01b031661010b565b7f000000000000000000000000000000000000000000000000000000000000000061010b565b6001546001600160a01b031661010b565b6100e76101e53660046106e6565b610433565b600154600160a01b900463ffffffff1660405163ffffffff909116815260200161011f565b6100e761021d3660046105c1565b61048f565b61022a6104a3565b600280546fffffffffffffffffffffffffffffffff19166001600160801b0383169081179091556040519081527f91b24045e1c14539fb7c7bb8d5a3dafbf55ccd97f72e6356b45fa4f6edf3950d906020015b60405180910390a150565b600254600154604051630757bc8160e01b81526001600160801b0390921660048301527f00000000000000000000000000000000000000000000000000000000000000006001600160a01b0390811660248401527f000000000000000000000000000000000000000000000000000000000000000081166044840152600160a01b90910463ffffffff1660648301526000917f000000000000000000000000000000000000000000000000000000000000000090911690630757bc819060840160006040518083038186803b15801561036057600080fd5b505afa158015610374573d6000803e3d6000fd5b505050506040513d6000823e601f3d908101601f1916820160405261039c919081019061060e565b50919050565b6103aa6104a3565b6103b26104fd565b6103bc600061050f565b565b6001546001600160a01b0316336001600160a01b03161461041e5760405162461bcd60e51b81526020600482015260156024820152746d73672e73656e64657220213d206e6f6d696e656560581b60448201526064015b60405180910390fd5b6001546103b2906001600160a01b0316610561565b61043b6104a3565b6001805463ffffffff60a01b1916600160a01b63ffffffff8416908102919091179091556040519081527fd812e713c674b07e43d52e41856e3a34b842fb6ffa99daa2c252d6d75426f7409060200161027d565b6104976104a3565b6104a08161050f565b50565b6000546001600160a01b031633146103bc5760405162461bcd60e51b815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65726044820152606401610415565b6105056104a3565b6103bc6000610561565b600180546001600160a01b038381166001600160a01b0319831681179093556040519116919082907fe7624d724357e317f51579affee5050a97c60b060e513e69aa8a1a35fb3315a790600090a35050565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b80516105bc81610722565b919050565b6000602082840312156105d357600080fd5b81356105de81610722565b9392505050565b6000602082840312156105f757600080fd5b81356001600160801b03811681146105de57600080fd5b6000806040838503121561062157600080fd5b8251915060208084015167ffffffffffffffff8082111561064157600080fd5b818601915086601f83011261065557600080fd5b8151818111156106675761066761070c565b8060051b604051601f19603f8301168101818110858211171561068c5761068c61070c565b604052828152858101935084860182860187018b10156106ab57600080fd5b600095505b838610156106d5576106c1816105b1565b8552600195909501949386019386016106b0565b508096505050505050509250929050565b6000602082840312156106f857600080fd5b813563ffffffff811681146105de57600080fd5b634e487b7160e01b600052604160045260246000fd5b6001600160a01b03811681146104a057600080fdfea26469706673582212200c99ed90cb0e377940f9e4989b6668785ddc1a1f113074dab8d5faa123d268e864736f6c63430008070033",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {
+      "acceptOwnership()": {
+        "details": "Only callable by the current nominee. Sets nominee back to zero address."
+      },
+      "getNominee()": {
+        "returns": {
+          "_0": "The current nominee"
+        }
+      },
+      "owner()": {
+        "details": "Returns the address of the current owner."
+      }
+    },
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {
+      "acceptOwnership()": {
+        "notice": "Accepts ownership nomination."
+      }
+    },
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 4929,
+        "contract": "contracts/UniswapV3OracleUintValue.sol:UniswapV3OracleUintValue",
+        "label": "_owner",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_address"
+      },
+      {
+        "astId": 17130,
+        "contract": "contracts/UniswapV3OracleUintValue.sol:UniswapV3OracleUintValue",
+        "label": "_nominee",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_address"
+      },
+      {
+        "astId": 14224,
+        "contract": "contracts/UniswapV3OracleUintValue.sol:UniswapV3OracleUintValue",
+        "label": "_observationPeriod",
+        "offset": 20,
+        "slot": "1",
+        "type": "t_uint32"
+      },
+      {
+        "astId": 14226,
+        "contract": "contracts/UniswapV3OracleUintValue.sol:UniswapV3OracleUintValue",
+        "label": "_baseAmount",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_uint128"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_uint128": {
+        "encoding": "inplace",
+        "label": "uint128",
+        "numberOfBytes": "16"
+      },
+      "t_uint32": {
+        "encoding": "inplace",
+        "label": "uint32",
+        "numberOfBytes": "4"
+      }
+    }
+  }
+}
