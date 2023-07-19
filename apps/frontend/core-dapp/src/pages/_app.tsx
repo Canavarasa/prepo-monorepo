@@ -1,7 +1,8 @@
 import { configure } from 'mobx'
-import { AppProps } from 'next/app'
+import { AppContext, AppProps } from 'next/app'
 import { useEffect, useState } from 'react'
 import { ToastifyContainer } from 'prepo-ui'
+import { AppInitialProps } from 'next/dist/shared/lib/utils'
 import Layout from '../components/layout/Layout'
 import AppBootstrap from '../components/AppBootstrap'
 import { RootStoreProvider } from '../context/RootStoreProvider'
@@ -16,6 +17,14 @@ import { TestIds } from '../components/TestId'
 import VersionsWall from '../components/VersionsWall'
 import RegionWall from '../components/RegionWall'
 import { compose } from '../utils/compose'
+
+type AppWithInitialProps = React.FC<AppProps> & {
+  getInitialProps?: (ctx: AppContext) => Promise<AppInitialProps>
+}
+
+const SHOULD_REDIRECT_TO_ETH_LIMO =
+  process.env.NEXT_PUBLIC_VERCEL_URL === 'app.prepo.io' &&
+  process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
 
 // mobx config
 configure({
@@ -38,7 +47,7 @@ function useClient(): boolean {
 
 const Walls = compose(VersionsWall, TermsWall, RegionWall)
 
-const App: React.FC<AppProps> = ({ Component, pageProps }: AppProps) => {
+const App: AppWithInitialProps = ({ Component, pageProps }) => {
   const client = useClient()
 
   // Our styled-components hydration and light/dark mode system is not yet
@@ -60,6 +69,19 @@ const App: React.FC<AppProps> = ({ Component, pageProps }: AppProps) => {
       </LightWeightChartProvider>
     </RootStoreProvider>
   )
+}
+
+App.getInitialProps = ({ ctx }) => {
+  // ctx.res is not writable during pre-rendering, so we have to check for the
+  // presence of `writeHead`
+  if (ctx.res && 'writeHead' in ctx.res && SHOULD_REDIRECT_TO_ETH_LIMO) {
+    ctx.res.writeHead(307, {
+      Location: 'https://prepo.eth.limo',
+    })
+    ctx.res.end()
+  }
+
+  return Promise.resolve({ pageProps: {} })
 }
 
 export default App
