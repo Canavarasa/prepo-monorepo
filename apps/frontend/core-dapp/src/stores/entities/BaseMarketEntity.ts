@@ -1,4 +1,4 @@
-import { calculateValuation, makeError } from 'prepo-utils'
+import { calculateValuation } from 'prepo-utils'
 import { action, makeObservable } from 'mobx'
 import { IconName } from 'prepo-ui'
 import { ContractReturn, ContractStore } from 'prepo-stores'
@@ -31,6 +31,7 @@ import { getContractCall } from '../utils/web3-store-utils'
 import { DateTimeInMs } from '../../utils/date-types'
 import { getTokenPrice, normalizePoolsData } from '../../utils/market-utils'
 import { compactNumber } from '../../utils/number-utils'
+import { UnsignedTxOutput } from '../../types/transaction.types'
 
 /** BasePrepoMarketAbi contains all overlapping functions between old PrepoMarket and new PrepoMarket in v1.1 */
 export type BasePrepoMarketAbi = PrepoMarketAbi | PrepoMarketV11Abi
@@ -145,15 +146,20 @@ export class BaseMarketEntity
     return this.call<GetExpiryTime>('getExpiryTime', params, { subscribe: false })
   }
 
-  async redeem(...params: Parameters<Redeem>): Promise<{ error?: Error; hash?: string }> {
-    let hash: string | undefined
-    try {
-      const tx = await this.sendTransaction<Redeem>('redeem', params)
-      hash = tx.hash
-      await tx.wait()
-      return { hash }
-    } catch (error: unknown) {
-      return { error: makeError(error), hash }
+  createRedeemTx(...params: Parameters<Redeem>): UnsignedTxOutput {
+    if (!this.contract)
+      return {
+        success: false,
+        error: 'Something went wrong, please try again later.',
+      }
+
+    const data = this.contract.interface.encodeFunctionData('redeem', params)
+    return {
+      success: true,
+      tx: {
+        data,
+        to: this.address,
+      },
     }
   }
 

@@ -13,24 +13,20 @@ const WithdrawButton: React.FC = () => {
     withdrawalDisabled,
     withdrawButtonInitialLoading,
     withdrawUILoading,
+    transactionBundle: { actionLabel, execute },
   } = withdrawStore
 
   const buttonText = useMemo(() => {
     if (withdrawButtonInitialLoading) return ''
     if (priceImpactTooHigh) return 'Price Impact Too High'
     if (insufficientBalance) return 'Insufficient Balance'
-    return 'Withdraw'
-  }, [insufficientBalance, priceImpactTooHigh, withdrawButtonInitialLoading])
+    return actionLabel
+  }, [actionLabel, insufficientBalance, priceImpactTooHigh, withdrawButtonInitialLoading])
 
   if (!connected || !isNetworkSupported) return <ConnectButton block />
 
   return (
-    <Button
-      block
-      disabled={withdrawalDisabled}
-      loading={withdrawUILoading}
-      onClick={withdrawStore.withdraw}
-    >
+    <Button block disabled={withdrawalDisabled} loading={withdrawUILoading} onClick={execute}>
       {buttonText}
     </Button>
   )

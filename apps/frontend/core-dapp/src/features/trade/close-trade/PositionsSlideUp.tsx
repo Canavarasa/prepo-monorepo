@@ -39,7 +39,9 @@ const SlideUpRowWithPadding = styled(SlideUpRow)`
 const PositionsSlideUp: React.FC = () => {
   const router = useRouter()
   const { closeTradeStore, portfolioStore, tradeStore, web3Store } = useRootStore()
-  const { closing } = closeTradeStore
+  const {
+    transactionBundle: { transacting },
+  } = closeTradeStore
   const { connected } = web3Store
   const { userPositions } = portfolioStore
   const { slideUpContent, setSlideUpContent, selectedPosition } = tradeStore
@@ -50,7 +52,8 @@ const PositionsSlideUp: React.FC = () => {
   // - loading positions: loading skeleton in button
   // - user has no position and nothing selected: Show "No Opened Position"
   // - user is closing a position
-  const isSlideUpDisabled = !connected || userPositions === undefined || hasNoPosition || closing
+  const isSlideUpDisabled =
+    !connected || userPositions === undefined || hasNoPosition || transacting
 
   const handleSelectPosition = (position: PositionEntity): void => {
     tradeStore.setSelectedMarket(position.market.urlId)

@@ -18,7 +18,10 @@ const Wrapper = styled.div`
 const CloseTrade: React.FC = () => {
   const { closeTradeStore, tokensStore, tradeStore, web3Store } = useRootStore()
   const { connected } = web3Store
-  const { closing, inputValue } = closeTradeStore
+  const {
+    inputValue,
+    transactionBundle: { transacting },
+  } = closeTradeStore
   const { selectedPosition, selectedMarket } = tradeStore
 
   return (
@@ -30,7 +33,7 @@ const CloseTrade: React.FC = () => {
           icon: tokensStore.COLLATERAL.iconName,
           text: tokensStore.COLLATERAL.shortName,
         }}
-        disabled={!selectedPosition || !connected || closing || !!selectedMarket?.resolved}
+        disabled={!selectedPosition || !connected || transacting || !!selectedMarket?.resolved}
         isBalanceZero={selectedPosition?.totalValueInWstEthBN?.eq(0)}
         onChange={closeTradeStore.setInput}
         showBalance

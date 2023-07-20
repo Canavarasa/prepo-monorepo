@@ -23,7 +23,7 @@ type Handlers = {
 type RequiredApprovalCreator = () => {
   amount: BigNumber | undefined
   spender: SupportedContractsNames
-  token: Erc20PermitStore
+  token: Erc20PermitStore | undefined
 }
 
 export class TransactionBundleStore {
@@ -63,12 +63,13 @@ export class TransactionBundleStore {
 
   private get hasAllowance(): boolean | undefined {
     const { amount, spender, token } = this.requiredApproval()
-    if (amount === undefined) return undefined
+    if (amount === undefined || token === undefined) return undefined
     return !token.needToAllowFor(amount, spender)
   }
 
   private get approveTx(): UnsignedTransaction | undefined {
     const { spender, token } = this.requiredApproval()
+    if (token === undefined) return undefined
     return token.createUnlockPermanentlyTx(spender).tx
   }
 
@@ -149,7 +150,7 @@ export class TransactionBundleStore {
 
     const spenderAddress = getContractAddress(spender, network.name, supportedContracts)
 
-    if (hasAllowance === undefined || spenderAddress === undefined)
+    if (token === undefined || hasAllowance === undefined || spenderAddress === undefined)
       return {
         success: false,
         error: 'Something went wrong. Please try again later.',

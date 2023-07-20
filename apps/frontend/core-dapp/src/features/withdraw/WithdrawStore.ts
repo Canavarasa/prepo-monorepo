@@ -8,6 +8,9 @@ import { getBalanceLimitInfo } from '../../utils/balance-limits'
 import { addDuration } from '../../utils/date-utils'
 import { DurationInMs } from '../../utils/date-types'
 import { EthConvertible } from '../../stores/BalancerStore'
+import { SignedPermit } from '../../stores/entities/Erc20Permit.entity'
+import { UnsignedTxOutput } from '../../types/transaction.types'
+import { TransactionBundleStore } from '../../stores/TransactionBundleStore'
 
 export type WithdrawLimit =
   | {
@@ -25,11 +28,23 @@ export type WithdrawLimit =
 export class WithdrawStore {
   private static readonly GAS_LIMIT = 2_500_000
 
-  withdrawing = false
   private input: { type: 'input'; value: string } | { type: 'max' } = {
     type: 'input',
     value: '',
   }
+
+  readonly transactionBundle = new TransactionBundleStore({
+    actionNames: () => ['Withdraw'],
+    actionTxCreator: this.withdraw.bind(this),
+    onAfterTransactionSuccess: this.handleAfterTransactionSuccess.bind(this),
+    onError: this.handleError.bind(this),
+    requiredApproval: () => ({
+      amount: this.withdrawalAmount?.inWstEthBN,
+      spender: 'DEPOSIT_TRADE_HELPER',
+      token: this.root.collateralStore,
+    }),
+    root: this.root,
+  })
 
   constructor(public root: RootStore) {
     makeAutoObservable(this, {}, { autoBind: true })
@@ -49,7 +64,7 @@ export class WithdrawStore {
     }
   }
 
-  async withdraw(): Promise<void> {
+  private withdraw(permit: SignedPermit): UnsignedTxOutput {
     const { address } = this.root.web3Store
     if (
       this.insufficientBalance ||
@@ -57,25 +72,36 @@ export class WithdrawStore {
       this.withdrawalAmount.inWstEthBN.eq(0) ||
       address === undefined
     )
-      return
+      return {
+        success: false,
+        error: TransactionBundleStore.UNEXPECTED_ERROR,
+      }
 
-    this.withdrawing = true
-    const { error, hash } = await this.root.depositTradeHelperStore.withdrawAndUnwrap(
-      address,
-      this.withdrawalAmount.inWstEthBN,
-      this.withdrawalAmount.inEthBN
-    )
+    return this.root.depositTradeHelperStore.createWithdrawAndUnwrapTx({
+      amountIn: this.withdrawalAmount.inWstEthBN,
+      amountOut: this.withdrawalAmount.inEthBN,
+      permit,
+      recipient: address,
+    })
+  }
 
-    const explorerUrl = hash ? this.root.web3Store.getBlockExplorerUrl(hash) : undefined
-    if (error) {
-      toast.error('Withdrawal Failed', { description: error, link: explorerUrl })
-    } else {
-      toast.success('Withdrawal Confirmed', { link: explorerUrl })
-    }
+  private handleAfterTransactionSuccess({
+    hash,
+    type,
+  }: {
+    hash: string
+    type: 'approval' | 'action'
+  }): void {
+    toast.success(type === 'approval' ? 'Approved Tokens for Withdrawal' : 'Withdrawal Confirmed', {
+      link: this.root.web3Store.getBlockExplorerUrl(hash),
+    })
+    this.input = { type: 'input', value: '' }
+  }
 
-    runInAction(() => {
-      this.withdrawing = false
-      if (!error) this.input = { type: 'input', value: '' }
+  private handleError({ error, hash }: { error: string; hash?: string }): void {
+    toast.error('Withdrawal Failed', {
+      description: error,
+      link: hash ? this.root.web3Store.getBlockExplorerUrl(hash) : undefined,
     })
   }
 
@@ -129,11 +155,9 @@ export class WithdrawStore {
 
   get withdrawUILoading(): boolean {
     const { permitReady } = this.root.collateralStore
-    const { needPermitForWithdrawAndUnwrap } = this.root.depositTradeHelperStore
     return (
       !permitReady ||
-      needPermitForWithdrawAndUnwrap === undefined ||
-      this.withdrawing ||
+      this.transactionBundle.transacting ||
       this.withdrawButtonInitialLoading ||
       this.withdrawLimit.status === 'loading'
     )
@@ -141,7 +165,11 @@ export class WithdrawStore {
 
   get withdrawButtonInitialLoading(): boolean {
     if (this.input.type === 'input' && this.input.value === '') return false
-    return Boolean(this.isLoadingBalance || this.insufficientBalance === undefined)
+    return Boolean(
+      this.isLoadingBalance ||
+        this.insufficientBalance === undefined ||
+        this.transactionBundle.initialLoading
+    )
   }
 
   get withdrawLimit(): WithdrawLimit {

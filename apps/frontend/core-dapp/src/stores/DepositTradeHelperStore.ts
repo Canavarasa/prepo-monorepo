@@ -1,8 +1,7 @@
-import { BigNumber, ethers } from 'ethers'
+import { BigNumber } from 'ethers'
 import { ContractStore } from 'prepo-stores'
 import { makeError } from 'prepo-utils'
 import addDays from 'date-fns/fp/addDays'
-import { formatEther } from 'ethers/lib/utils'
 import { makeObservable } from 'mobx'
 import { RootStore } from './RootStore'
 import { BalancerStore } from './BalancerStore'
@@ -11,9 +10,6 @@ import { SupportedContracts } from '../lib/contract.types'
 import { DepositTradeHelperAbi, DepositTradeHelperAbi__factory } from '../../generated/typechain'
 import { TxOutput, UnsignedTxOutput } from '../types/transaction.types'
 
-type TradeForCollateral = DepositTradeHelperAbi['functions']['tradeForCollateral']
-type WithdrawAndUnwrap =
-  DepositTradeHelperAbi['functions']['withdrawAndUnwrap(address,uint256,(uint256,uint8,bytes32,bytes32),(uint256,uint256))']
 type WrapAndDeposit =
   DepositTradeHelperAbi['functions']['wrapAndDeposit(address,(uint256,uint256))']
 
@@ -27,67 +23,46 @@ export class DepositTradeHelperStore extends ContractStore<RootStore, SupportedC
     makeObservable(this, {})
   }
 
-  async tradeForCollateral({
+  createTradeForCollateralTx({
     collateralAmountOut,
-    needsPermit,
+    permit,
     positionToken,
     positionTokenAmount,
     recipient,
   }: {
     collateralAmountOut: BigNumber
-    needsPermit: boolean
+    permit: SignedPermit
     positionToken: Erc20PermitStore
     positionTokenAmount: BigNumber
     recipient: string
-  }): Promise<TxOutput> {
-    const { address: depositTradeHelperAddress } = this
-
-    if (depositTradeHelperAddress === undefined || positionToken.address === undefined)
+  }): UnsignedTxOutput {
+    if (!this.contract || positionToken.address === undefined)
       return {
         success: false,
         error: 'Something went wrong, please try again later.',
       }
 
-    let hash: string | undefined
-    try {
-      const deadline = getPermitDeadline()
-      let permit = Erc20PermitStore.EMPTY_PERMIT
+    const deadline = BalancerStore.getTradeDeadline()
 
-      if (needsPermit) {
-        const positionPermit = await positionToken.getPermitSignature(
-          depositTradeHelperAddress,
-          ethers.constants.MaxUint256,
-          deadline
-        )
+    const data = this.contract.interface.encodeFunctionData('tradeForCollateral', [
+      recipient,
+      positionTokenAmount,
+      permit,
+      {
+        amountOutMinimum:
+          this.root.advancedSettingsStore.getAmountAfterSlippageForTrades(collateralAmountOut),
+        deadline,
+        positionToken: positionToken.address,
+        sqrtPriceLimitX96: BigNumber.from(0),
+      },
+    ])
 
-        if (typeof positionPermit === 'string') {
-          return { success: false, error: positionPermit }
-        }
-
-        permit = {
-          ...positionPermit,
-          deadline,
-        }
-      }
-
-      const tx = await this.sendTransaction<TradeForCollateral>('tradeForCollateral', [
-        recipient,
-        positionTokenAmount,
-        permit,
-        {
-          amountOutMinimum:
-            this.root.advancedSettingsStore.getAmountAfterSlippageForTrades(collateralAmountOut),
-          deadline,
-          positionToken: positionToken.address,
-          sqrtPriceLimitX96: BigNumber.from(0),
-        },
-      ])
-
-      hash = tx.hash
-      await tx.wait()
-      return { success: true, hash }
-    } catch (e) {
-      return { success: false, error: makeError(e).message, hash }
+    return {
+      success: true,
+      tx: {
+        data,
+        to: this.address,
+      },
     }
   }
 
@@ -241,69 +216,43 @@ export class DepositTradeHelperStore extends ContractStore<RootStore, SupportedC
     }
   }
 
-  async withdrawAndUnwrap(
-    recipient: string,
-    amountIn: BigNumber,
+  createWithdrawAndUnwrapTx({
+    amountIn,
+    amountOut,
+    permit,
+    recipient,
+  }: {
+    amountIn: BigNumber
     amountOut: BigNumber
-  ): Promise<TxOutput> {
-    let hash: string | undefined
-    try {
-      const amountOutMinimum =
-        this.root.advancedSettingsStore.getAmountAfterSlippageForDeposits(amountOut)
-      const { address: wstETHAddress } = this.root.baseTokenStore
+    permit: SignedPermit
+    recipient: string
+  }): UnsignedTxOutput {
+    const amountOutMinimum =
+      this.root.advancedSettingsStore.getAmountAfterSlippageForDeposits(amountOut)
 
-      // impossible unless we forgot to set addresses
-      if (!wstETHAddress || !recipient || !this.address || !this.contract)
-        return { success: false, error: 'Something went wrong' }
+    // impossible unless we forgot to set addresses
+    if (!recipient || !this.address || !this.contract)
+      return { success: false, error: 'Something went wrong' }
 
-      // button should be disabled
-      if (!this.root.web3Store.signer?.provider)
-        return { success: false, error: 'Wallet not connected.' }
-
-      let permit = Erc20PermitStore.EMPTY_PERMIT
-
-      if (this.needPermitForWithdrawAndUnwrap) {
-        const deadline = getPermitDeadline()
-        const signature = await this.root.collateralStore.getPermitSignature(
-          this.address,
-          ethers.constants.MaxUint256,
-          deadline
-        )
-
-        if (typeof signature === 'string') return { success: false, error: signature }
-
-        permit = {
-          deadline,
-          v: signature.v,
-          s: signature.s,
-          r: signature.r,
-        }
-      }
-
-      const tx = await this.sendTransaction<WithdrawAndUnwrap>(
-        'withdrawAndUnwrap(address,uint256,(uint256,uint8,bytes32,bytes32),(uint256,uint256))',
-        [
-          recipient,
-          amountIn,
-          permit,
-          {
-            amountOutMinimum,
-            deadline: BalancerStore.getTradeDeadline(),
-          },
-        ]
-      )
-      hash = tx.hash
-      await tx.wait()
-      return { success: true, hash }
-    } catch (e) {
-      return { success: false, error: makeError(e).message, hash }
-    }
-  }
-
-  get needPermitForWithdrawAndUnwrap(): boolean | undefined {
-    return this.root.collateralStore.needToAllowFor(
-      formatEther(ethers.constants.MaxUint256),
-      'DEPOSIT_TRADE_HELPER'
+    const data = this.contract.interface.encodeFunctionData(
+      'withdrawAndUnwrap(address,uint256,(uint256,uint8,bytes32,bytes32),(uint256,uint256))',
+      [
+        recipient,
+        amountIn,
+        permit,
+        {
+          amountOutMinimum,
+          deadline: BalancerStore.getTradeDeadline(),
+        },
+      ]
     )
+
+    return {
+      success: true,
+      tx: {
+        data,
+        to: this.address,
+      },
+    }
   }
 }

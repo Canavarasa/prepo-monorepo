@@ -7,19 +7,53 @@ import { RootStore } from '../../../stores/RootStore'
 import { PositionEntity } from '../../../stores/entities/Position.entity'
 import { WEI_DENOMINATOR } from '../../../lib/constants'
 import { calculateValuation } from '../../../utils/market-utils'
+import { fraction, toPercent } from '../../../utils/fraction-utils'
 import { safeDiv } from '../../../utils/safeDiv'
 import { EthConvertible } from '../../../stores/BalancerStore'
 import { BaseMarketEntity } from '../../../stores/entities/BaseMarketEntity'
+import { SignedPermit } from '../../../stores/entities/Erc20Permit.entity'
+import { UnsignedTxOutput } from '../../../types/transaction.types'
+import { TransactionBundleStore } from '../../../stores/TransactionBundleStore'
 
 export class CloseTradeStore {
   private static readonly GAS_LIMIT = 2_500_000
 
-  closing = false
   input: { type: 'max' } | { type: 'input'; value: string } = {
     type: 'input',
     value: '',
   }
   amountOutBN?: BigNumber = undefined
+
+  readonly transactionBundle = new TransactionBundleStore({
+    actionNames: () => {
+      const { selectedMarket, selectedPosition, value } = this
+      const verb = selectedMarket?.resolved ? 'Redeem' : 'Close'
+
+      if (
+        value !== undefined &&
+        value.inEthBN.gt(0) &&
+        selectedPosition?.totalValueInEthBN !== undefined
+      ) {
+        const percentage = toPercent(
+          fraction(value.inEthBN.mul(100), selectedPosition.totalValueInEthBN)
+        )
+        return [`${verb} Position (${percentage > 0.01 ? percentage.toFixed(2) : '<0.01'}%)`]
+      }
+
+      return [`${verb} Position`]
+    },
+    actionTxCreator: this.closeOrRedeemPosition.bind(this),
+    onAfterTransactionSuccess: this.handleAfterTransactionSuccess.bind(this),
+    onError: this.handleError.bind(this),
+    requiredApproval: () => ({
+      // Redeeming requires no approvals, therefore pretend amount is zero
+      amount: this.selectedMarket?.resolved ? BigNumber.from(0) : this.value?.inWstEthBN,
+      spender: 'DEPOSIT_TRADE_HELPER',
+      token: this.selectedPosition?.token,
+    }),
+    root: this.root,
+  })
+
   constructor(private root: RootStore) {
     makeAutoObservable(this, {}, { autoBind: true })
     this.subscribeClosePositionAmountOut()
@@ -131,16 +165,6 @@ export class CloseTradeStore {
     return this.selectedPosition.token.formatUnits(this.amountBN)
   }
 
-  // allowance
-
-  get needPermit(): boolean | undefined {
-    if (!this.selectedPosition || !this.root.web3Store.connected || this.selectedMarket?.resolved)
-      return false
-    if (this.amount === undefined) return undefined
-
-    return this.selectedPosition.token.needToAllowFor(this.amount, 'DEPOSIT_TRADE_HELPER')
-  }
-
   // UI states
 
   get disabled(): boolean {
@@ -164,13 +188,13 @@ export class CloseTradeStore {
       loadingSelectedPosition ||
       // these values should only be undefined once while token's decimals is undefined
       this.value === undefined ||
-      this.needPermit === undefined ||
+      this.transactionBundle.initialLoading === undefined ||
       this.insufficientBalance === undefined
     )
   }
 
   get loading(): boolean {
-    return this.initialLoading || this.closing
+    return this.initialLoading || this.transactionBundle.transacting
   }
 
   get insufficientBalance(): boolean | undefined {
@@ -284,54 +308,34 @@ export class CloseTradeStore {
 
   // actions
 
-  closeOrRedeemPosition(): void {
-    if (this.selectedMarket?.resolved) {
-      this.redeemPosition()
-    } else {
-      this.closePosition()
-    }
+  private closeOrRedeemPosition(permit: SignedPermit): UnsignedTxOutput {
+    return this.selectedMarket?.resolved ? this.redeemPosition() : this.closePosition(permit)
   }
 
-  private async closePosition(): Promise<void> {
-    const { address: collateralAddress } = this.root.collateralStore
+  private closePosition(permit: SignedPermit): UnsignedTxOutput {
     const { address: addressOfSigner } = this.root.web3Store
 
     if (
       !this.selectedPosition ||
-      this.selectedPosition.token.address === undefined ||
       this.amountBN === undefined ||
       this.amountOutInWstEthBN === undefined ||
-      this.needPermit === undefined ||
-      collateralAddress === undefined ||
       addressOfSigner === undefined
     )
-      return
+      return {
+        success: false,
+        error: 'Something went wrong, try again later.',
+      }
 
-    this.root.closeTradeStore.closing = true
-
-    const { hash, error } = await this.root.depositTradeHelperStore.tradeForCollateral({
+    return this.root.depositTradeHelperStore.createTradeForCollateralTx({
       collateralAmountOut: this.amountOutInWstEthBN,
+      permit,
       positionToken: this.selectedPosition.token,
       positionTokenAmount: this.amountBN,
       recipient: addressOfSigner,
-      needsPermit: this.needPermit,
-    })
-
-    const explorerUrl = hash ? this.root.web3Store.getBlockExplorerUrl(hash) : undefined
-
-    if (error) {
-      toast.error('Trade Failed', { description: error, link: explorerUrl })
-    } else {
-      toast.success('Position Closed', { link: explorerUrl })
-    }
-
-    runInAction(() => {
-      this.root.closeTradeStore.closing = false
-      if (!error) this.root.closeTradeStore.setInput('') // reset input amount if trade was successful
     })
   }
 
-  private async redeemPosition(): Promise<void> {
+  private redeemPosition(): UnsignedTxOutput {
     const { direction } = this.root.tradeStore
     const { address } = this.root.web3Store
 
@@ -341,28 +345,46 @@ export class CloseTradeStore {
       this.selectedMarket === undefined ||
       this.selectedPosition.token.balanceOfSigner === undefined
     )
-      return
+      return {
+        success: false,
+        error: TransactionBundleStore.UNEXPECTED_ERROR,
+      }
 
     const {
       token: { balanceOfSigner },
     } = this.selectedPosition
 
-    this.root.closeTradeStore.closing = true
-    const { error, hash } = await this.selectedMarket.redeem(
+    return this.selectedMarket.createRedeemTx(
       direction === 'long' ? balanceOfSigner : BigNumber.from(0),
       direction === 'short' ? balanceOfSigner : BigNumber.from(0),
       address
     )
+  }
 
-    const explorerUrl = hash ? this.root.web3Store.getBlockExplorerUrl(hash) : undefined
-    if (error) {
-      toast.error('Redeem failed', { description: error, link: explorerUrl })
-    } else {
-      toast.success('Position redeemed', { link: explorerUrl })
+  private handleAfterTransactionSuccess({
+    hash,
+    type,
+  }: {
+    hash: string
+    type: 'approval' | 'action'
+  }): void {
+    let message = 'Position Closed'
+
+    if (type === 'approval') {
+      message = 'Approved Tokens for Trade'
+    } else if (this.selectedMarket?.resolved) {
+      message = 'Position Redeemed'
     }
 
-    runInAction(() => {
-      this.root.closeTradeStore.closing = false
+    toast.success(message, { link: this.root.web3Store.getBlockExplorerUrl(hash) })
+
+    this.reset()
+  }
+
+  private handleError({ error, hash }: { error: string; hash?: string }): void {
+    toast.error(this.selectedMarket?.resolved ? 'Redeem Failed' : 'Trade Failed', {
+      description: error,
+      link: hash ? this.root.web3Store.getBlockExplorerUrl(hash) : undefined,
     })
   }
 
