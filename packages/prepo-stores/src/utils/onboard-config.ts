@@ -18,7 +18,7 @@ export const getOnboardConfig = async (
     import('@web3-onboard/injected-wallets'),
     import('@web3-onboard/walletconnect'),
     import('@web3-onboard/coinbase'),
-    import('@web3-onboard/gnosis'),
+    import('./onboard-gnosis'),
   ])
 
   const injected = injectedModule()

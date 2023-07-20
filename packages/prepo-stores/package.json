@@ -12,6 +12,8 @@
     "build:watch": "yarn build --watch"
   },
   "dependencies": {
+    "@safe-global/safe-apps-provider": "^0.17.1",
+    "@safe-global/safe-apps-sdk": "^8.0.0",
     "@web3-onboard/coinbase": "2.2.1",
     "@web3-onboard/core": "2.16.1",
     "@web3-onboard/injected-wallets": "2.8.3",
