@@ -4,6 +4,7 @@ import { isAddress } from 'ethers/lib/utils'
 import type { OnboardAPI, WalletState } from '@web3-onboard/core'
 import { Network, IS_BROWSER, NETWORKS, SupportedNetworks } from 'prepo-constants'
 import { chainIdToHexString } from 'prepo-utils'
+import type SafeAppsSDK from '@safe-global/safe-apps-sdk'
 import { RootStore } from './RootStore'
 import { TransactionReceipt } from './utils/stores.types'
 import { isImportantError } from './utils/error-capturer-util'
@@ -39,7 +40,7 @@ export class Web3Store {
   customRpc: Partial<Record<SupportedNetworks, string>> = {}
 
   private readonly onboard: Promise<OnboardAPI>
-  isSafeWallet = false
+  safeAppsSdk: SafeAppsSDK | undefined = undefined
   walletState?: WalletState
 
   constructor(root: RootStore<unknown>) {
@@ -53,9 +54,9 @@ export class Web3Store {
 
     this.initCustomRpc()
 
-    Web3Store.detectSafeWallet()
-      .then((isSafeWallet) => {
-        this.isSafeWallet = isSafeWallet
+    Web3Store.getSafeAppsSdk()
+      .then((safeAppsSdk) => {
+        this.safeAppsSdk = safeAppsSdk
       })
       .then(() => this.onboard)
       .then(this.init)
@@ -73,7 +74,7 @@ export class Web3Store {
     const previouslySelectedWallet = window.localStorage.getItem('selectedWallet')
     if (previouslySelectedWallet) {
       this.connect(previouslySelectedWallet)
-    } else if (this.isSafeWallet) {
+    } else if (this.safeAppsSdk) {
       this.connect('Safe')
     }
 
@@ -326,10 +327,10 @@ export class Web3Store {
     return this.supportedNetworkIds[this.currentNetworkId] ?? this.root.config.defaultNetwork
   }
 
-  private static async detectSafeWallet(): Promise<boolean> {
+  private static async getSafeAppsSdk(): Promise<SafeAppsSDK | undefined> {
     try {
       // If we're not running in an iframe, we're not running inside Safe Wallet
-      if (typeof window === 'undefined' || window.self === window.top) return false
+      if (typeof window === 'undefined' || window.self === window.top) return undefined
 
       const { default: SafeAppsSDK } = await import('@safe-global/safe-apps-sdk')
       const sdk = new SafeAppsSDK()
@@ -341,11 +342,11 @@ export class Web3Store {
         }),
       ])
 
-      return !!safe
+      return safe ? sdk : undefined
     } catch (e) {
       // eslint-disable-next-line no-console
       console.warn("[prePO] Couldn't detect whether we're running inside Safe", e)
-      return false
+      return undefined
     }
   }
 }

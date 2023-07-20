@@ -56,7 +56,7 @@ const Header: React.FC = () => {
   const regionBlocked = useRegionBlocked()
   const { termsStore, web3Store } = useRootStore()
   const { showTermsPage } = termsStore
-  const { isSafeWallet } = web3Store
+  const { safeAppsSdk } = web3Store
 
   if (isOutdated || regionBlocked)
     return (
@@ -78,7 +78,7 @@ const Header: React.FC = () => {
           {!showTermsPage && <Navigation />}
         </Flex>
         <Flex gap={8}>
-          {!showTermsPage && !isSafeWallet && <ConnectButton size="sm" hideWhenConnected />}
+          {!showTermsPage && !safeAppsSdk && <ConnectButton size="sm" hideWhenConnected />}
           <SettingsMenu />
         </Flex>
       </AHeader>

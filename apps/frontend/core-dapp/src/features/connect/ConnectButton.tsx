@@ -9,7 +9,7 @@ type Props = {
 const ConnectButton: React.FC<Props> = ({ hideWhenConnected, ...buttonProps }) => {
   const { config, web3Store } = useRootStore()
   const { defaultNetwork } = config
-  const { connecting, connected, isNetworkSupported, isSafeWallet } = web3Store
+  const { connecting, connected, isNetworkSupported, safeAppsSdk } = web3Store
 
   if (connected && isNetworkSupported) return null
 
@@ -26,7 +26,7 @@ const ConnectButton: React.FC<Props> = ({ hideWhenConnected, ...buttonProps }) =
 
   let buttonText
 
-  if (isSafeWallet) {
+  if (safeAppsSdk) {
     buttonText = 'Connecting to Safe'
   } else if (!isNetworkSupported) {
     buttonText = `Switch to ${defaultNetwork.displayName ?? defaultNetwork.chainName}`
@@ -38,7 +38,7 @@ const ConnectButton: React.FC<Props> = ({ hideWhenConnected, ...buttonProps }) =
     // eslint-disable-next-line react/jsx-props-no-spreading
     <Button
       block
-      disabled={isSafeWallet || connecting}
+      disabled={!!safeAppsSdk || connecting}
       onClick={handleSwitchNetwork}
       {...buttonProps}
     >

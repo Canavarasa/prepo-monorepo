@@ -55,7 +55,7 @@ const ActionIcon: React.FC<ActionIconProps> = ({ iconName, href, onClick, overla
 
 const WalletInfo: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const { web3Store } = useRootStore()
-  const { address, isSafeWallet } = web3Store
+  const { address, safeAppsSdk } = web3Store
   const [copied, setCopied] = useState(false)
 
   if (!address) return null
@@ -89,7 +89,7 @@ const WalletInfo: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             iconName="etherscan"
             href={web3Store.getBlockExplorerUrl(address)}
           />
-          {!isSafeWallet && (
+          {!safeAppsSdk && (
             <ActionIcon overlay="Disconnect" iconName="power" onClick={handleDisconnect} />
           )}
         </Flex>

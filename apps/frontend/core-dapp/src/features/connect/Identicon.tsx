@@ -85,9 +85,9 @@ const Identicon: React.FC<Props> = ({
   avatarUrl,
 }) => {
   const { web3Store } = useRootStore()
-  const { isSafeWallet } = web3Store
+  const { safeAppsSdk } = web3Store
 
-  const blockie = useBlockie({ account, isSafeWallet })
+  const blockie = useBlockie({ account, isSafeWallet: !!safeAppsSdk })
 
   if (!account) return null
   if (avatarUrl) {
@@ -102,7 +102,7 @@ const Identicon: React.FC<Props> = ({
 
   return (
     <Wrapper diameterDesktop={diameterDesktop} diameterMobile={diameterMobile}>
-      {isSafeWallet ? (
+      {safeAppsSdk ? (
         <>{blockie && <Blockie src={blockie} />}</>
       ) : (
         <Jazzicon diameter={diameterDesktop} seed={jsNumberForAddress(account)} />
