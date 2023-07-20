@@ -1,19 +1,18 @@
-import { makeObservable, observable, runInAction, computed, action } from 'mobx'
+import { makeObservable, observable, computed, action } from 'mobx'
 import { BigNumber, utils } from 'ethers'
 import { UNLIMITED_AMOUNT_APPROVAL } from 'prepo-constants'
-import { displayDecimals, parseUnits } from 'prepo-utils'
+import { getContractAddress, parseUnits } from 'prepo-utils'
 import { ContractReturn, ContractStore, Factory } from 'prepo-stores'
 import { RootStore } from '../RootStore'
 import { SupportedContracts, SupportedContractsNames } from '../../lib/contract.types'
 import { Erc20Abi, Erc20Abi__factory } from '../../../generated/typechain'
 import { supportedContracts } from '../../lib/supported-contracts'
+import { UnsignedTxOutput } from '../../types/transaction.types'
 
 type TokenSymbol = Erc20Abi['functions']['symbol']
 type BalanceOf = Erc20Abi['functions']['balanceOf']
 type Decimals = Erc20Abi['functions']['decimals']
 type Allowance = Erc20Abi['functions']['allowance']
-type Approve = Erc20Abi['functions']['approve']
-type Transfer = Erc20Abi['functions']['transfer']
 
 type Constructor = {
   root: RootStore
@@ -23,7 +22,6 @@ type Constructor = {
 }
 
 export class Erc20Store extends ContractStore<RootStore, SupportedContracts> {
-  approving = false
   checkingForAllowance = true
   symbolOverride?: string
   transferHash: string | undefined
@@ -34,8 +32,6 @@ export class Erc20Store extends ContractStore<RootStore, SupportedContracts> {
     if (symbolOverride) this.symbolOverride = symbolOverride
     makeObservable(this, {
       allowance: observable,
-      approve: action.bound,
-      approving: observable,
       balanceOf: observable,
       balanceOfSigner: computed,
       checkingForAllowance: observable,
@@ -45,11 +41,9 @@ export class Erc20Store extends ContractStore<RootStore, SupportedContracts> {
       signerAllowance: observable,
       signerNeedsMoreTokens: observable,
       symbol: observable,
-      transfer: action.bound,
       transferHash: observable,
       transferring: observable,
-      unlockPermanently: action.bound,
-      unlockThisTimeOnly: action.bound,
+      createUnlockPermanentlyTx: action.bound,
       formatUnits: observable,
       parseUnits: observable,
     })
@@ -73,91 +67,28 @@ export class Erc20Store extends ContractStore<RootStore, SupportedContracts> {
     return this.call<TokenSymbol>('symbol', [], { subscribe: false })
   }
 
-  // contract write methods
-
-  async approve(...params: Parameters<Approve>): Promise<boolean> {
-    try {
-      this.approving = true
-      const { wait } = await this.sendTransaction<Approve>('approve', params)
-      await wait()
-      return true
-    } catch (e: unknown) {
-      this.root.toastStore.errorToast('Approval error', e)
-      return false
-    } finally {
-      runInAction(() => {
-        this.approving = false
-      })
-    }
-  }
-
-  async transfer(...params: Parameters<Transfer>): Promise<boolean> {
-    try {
-      this.transferring = true
-      this.transferHash = undefined
-      const { hash, wait } = await this.sendTransaction<Transfer>('transfer', params)
-      runInAction(() => {
-        this.transferHash = hash
-      })
-      await wait()
-      return true
-    } catch (error) {
-      this.root.toastStore.errorToast(`Error calling transfer`, error)
-      return false
-    } finally {
-      runInAction(() => {
-        this.transferring = false
-      })
-    }
-  }
-
-  async unlockPermanently(
-    spenderContractName: SupportedContractsNames = 'UNISWAP_SWAP_ROUTER',
-    notification: string | undefined = undefined
-  ): Promise<void> {
-    const contractAddresses = supportedContracts[spenderContractName]
-    if (!contractAddresses) {
-      this.root.captureError(new Error(`Contract address not found for ${spenderContractName}`))
-      this.root.toastStore.errorToast(
-        'Failed to unlock token.',
-        new Error('Something went wrong. Please try again later.')
-      )
-      return
-    }
-
-    const approved = await this.approve(
-      contractAddresses[this.root.web3Store.network.name] ?? '',
-      UNLIMITED_AMOUNT_APPROVAL
+  createUnlockPermanentlyTx(spenderContractName: SupportedContractsNames): UnsignedTxOutput {
+    const spenderAddress = getContractAddress(
+      spenderContractName,
+      this.root.web3Store.network.name,
+      supportedContracts
     )
-    if (approved) {
-      this.root.toastStore.successToast(notification ?? `Approved ${this.symbolOverride}.`)
-    }
-  }
 
-  async unlockThisTimeOnly(
-    amount: string,
-    spenderContractName: SupportedContractsNames = 'UNISWAP_SWAP_ROUTER',
-    notification: string | undefined = undefined
-  ): Promise<void> {
-    const contractAddresses = supportedContracts[spenderContractName]
-    if (!contractAddresses) {
-      this.root.captureError(new Error(`Contract address not found for ${spenderContractName}`))
-      this.root.toastStore.errorToast(
-        'Failed to unlock token.',
-        new Error('Something went wrong. Please try again later.')
-      )
-      return
+    if (!this.contract || !spenderAddress) {
+      return { success: false, error: 'Something went wrong. Please try again later.' }
     }
-    const amountBN = parseUnits(amount, this.decimalsNumber)
-    if (amountBN === undefined) return
-    const approved = await this.approve(
-      contractAddresses[this.root.web3Store.network.name] ?? '',
-      amountBN
-    )
-    if (approved) {
-      this.root.toastStore.successToast(
-        notification ?? `Approved ${displayDecimals(amount)} ${this.symbolOverride}.`
-      )
+
+    const data = this.contract.interface.encodeFunctionData('approve', [
+      spenderAddress,
+      UNLIMITED_AMOUNT_APPROVAL,
+    ])
+
+    return {
+      success: true,
+      tx: {
+        to: this.address,
+        data,
+      },
     }
   }
 
@@ -175,12 +106,6 @@ export class Erc20Store extends ContractStore<RootStore, SupportedContracts> {
     if (decimalsRes === undefined) return undefined
     const [decimals] = decimalsRes
     return decimals
-  }
-
-  get symbolString(): string | undefined {
-    const symbolRes = this.symbol()
-    if (symbolRes === undefined) return undefined
-    return symbolRes[0]
   }
 
   // we should return undefined when data is not available
@@ -207,11 +132,11 @@ export class Erc20Store extends ContractStore<RootStore, SupportedContracts> {
   }
 
   needToAllowFor(
-    amount: string,
+    amount: BigNumber | string,
     spenderContractName: SupportedContractsNames = 'UNISWAP_SWAP_ROUTER'
   ): boolean | undefined {
     const contractAddresses = supportedContracts[spenderContractName]
-    const amountBN = parseUnits(amount, this.decimalsNumber)
+    const amountBN = typeof amount === 'string' ? parseUnits(amount, this.decimalsNumber) : amount
     if (!contractAddresses || amountBN === undefined) return undefined
     return this.needsToAllowTokens(contractAddresses[this.root.web3Store.network.name], amountBN)
   }

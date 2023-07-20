@@ -10,7 +10,7 @@ const OpenTradeCurrencyInput: React.FC = () => {
   const { sortedTradeTokens } = tokensStore
   const {
     paymentToken,
-    openingTrade,
+    transactionBundle,
     setInput,
     controlledInput,
     tradingBalanceAfterGas,
@@ -31,7 +31,7 @@ const OpenTradeCurrencyInput: React.FC = () => {
         balance={balance}
         balanceAfterGas={tradingBalanceAfterGas}
         isBalanceZero={tradingBalanceAfterGasBN?.lte(0)}
-        disabled={!selectedMarket || openingTrade || selectedMarket.resolved}
+        disabled={!selectedMarket || transactionBundle.transacting || selectedMarket.resolved}
         onChange={setInput}
         currency={{
           icon: paymentToken.iconName,

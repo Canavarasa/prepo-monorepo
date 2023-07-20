@@ -10,6 +10,9 @@ import { DepositLimit, getDepositLimit } from '../../../utils/balance-limits'
 import { Token, TokensStore } from '../../../stores/TokensStore'
 import { EthConvertible } from '../../../stores/BalancerStore'
 import { calculateValuation } from '../../../utils/market-utils'
+import { TransactionBundleStore } from '../../../stores/TransactionBundleStore'
+import { SignedPermit } from '../../../stores/entities/Erc20Permit.entity'
+import { UnsignedTxOutput } from '../../../types/transaction.types'
 
 export class OpenTradeStore {
   private static readonly DEPOSIT_AND_TRADE_GAS_LIMIT = 3_500_000
@@ -20,8 +23,21 @@ export class OpenTradeStore {
     value: '',
   }
   longShortAmountBN?: BigNumber = undefined
-  openingTrade = false
   private paymentTokenOverride?: Token = undefined
+
+  readonly transactionBundle = new TransactionBundleStore({
+    actionNames: () => (this.paymentToken.type === 'native' ? ['Deposit', 'Trade'] : ['Trade']),
+    actionTxCreator: this.openTrade.bind(this),
+    root: this.root,
+    onAfterTransactionSuccess: this.handleAfterTransactionSuccess.bind(this),
+    onError: this.handleError.bind(this),
+    requiredApproval: () => ({
+      amount: this.amount?.inWstEthBN,
+      spender: 'DEPOSIT_TRADE_HELPER',
+      token: this.root.collateralStore,
+    }),
+  })
+
   constructor(private readonly root: RootStore) {
     this.subscribeOpenTradeAmountOut()
     makeAutoObservable(this, {}, { autoBind: true })
@@ -211,6 +227,8 @@ export class OpenTradeStore {
         this.insufficientBalance ||
         this.selectedMarket.resolved ||
         this.depositLimit.status !== 'not-exceeded' ||
+        this.transactionBundle.initialLoading ||
+        this.transactionBundle.transacting ||
         loadingValuationPrice
     )
   }
@@ -232,7 +250,7 @@ export class OpenTradeStore {
     const loadingMarketExpiry = !!this.selectedMarket && this.selectedMarket.resolved === undefined
 
     return (
-      this.needPermit === undefined ||
+      this.transactionBundle.initialLoading ||
       !this.amount ||
       this.insufficientBalance === undefined ||
       !this.root.collateralStore.permitReady ||
@@ -250,7 +268,7 @@ export class OpenTradeStore {
       this.selectedMarket && !this.insufficientBalance && this.initialLoading
     )
 
-    return this.openingTrade || loadingBalance || initialLoadingActivated
+    return this.transactionBundle.transacting || loadingBalance || initialLoadingActivated
   }
 
   get withinBounds(): boolean | undefined {
@@ -274,14 +292,6 @@ export class OpenTradeStore {
     if (this.price === undefined) return undefined
 
     return this.price > lowerBound && this.price < upperBound
-  }
-
-  get needPermit(): boolean | undefined {
-    if (this.amount === undefined) return undefined
-    return this.root.collateralStore.needToAllowFor(
-      this.amount.inWstEthString,
-      'DEPOSIT_TRADE_HELPER'
-    )
   }
 
   // price impacts
@@ -310,74 +320,68 @@ export class OpenTradeStore {
     return this.root.advancedSettingsStore.isEthWstEthPriceImpactTooHigh(this.depositPriceImpact)
   }
 
-  // action
-
-  async openTrade(): Promise<void> {
-    if (!this.selectedMarket) return
-
+  private openTrade(permit: SignedPermit): UnsignedTxOutput {
     const selectedToken = this.selectedPosition?.token
-    const price = this.selectedPosition?.priceInWstEth
-    const { address: collateralAddress } = this.root.collateralStore
 
     if (
+      !this.selectedMarket ||
       !selectedToken?.address ||
-      collateralAddress === undefined ||
-      price === undefined ||
       this.root.web3Store.address === undefined ||
       this.longShortAmountBN === undefined ||
-      this.needPermit === undefined ||
       !this.amount
     )
-      return
-
-    this.openingTrade = true
-
-    let hash: string | undefined
-    let error: string | undefined
+      return {
+        success: false,
+        error: 'Something went wrong, try again later.',
+      }
 
     const collateralAmount = this.amount.inWstEthBN
     const recipient = this.root.web3Store.address
     const positionToken = selectedToken.address
 
     if (this.paymentToken.type === 'native') {
-      const tx = await this.root.depositTradeHelperStore.wrapAndDepositAndTrade({
+      return this.root.depositTradeHelperStore.createWrapAndDepositAndTradeTx({
         amountInEth: this.amount.inEthBN,
         expectedAmountInPositionToken: this.longShortAmountBN,
         expectedIntermediateAmountInWstEth: collateralAmount,
-        needsPermit: this.needPermit,
+        permit,
         positionToken,
         recipient,
       })
-
-      error = tx.error
-      hash = tx.hash
-    } else {
-      const tx = await this.root.depositTradeHelperStore.tradeForPosition({
-        collateralAmount,
-        needsPermit: this.needPermit,
-        positionToken,
-        positionTokenAmountOut: this.longShortAmountBN,
-        recipient,
-      })
-
-      error = tx.error
-      hash = tx.hash
     }
 
-    const explorerUrl = hash ? this.root.web3Store.getBlockExplorerUrl(hash) : undefined
-    if (error) {
-      toast.error('Trade Failed', { description: error, link: explorerUrl })
-    } else {
-      toast.success(
-        this.paymentToken.type === 'native' ? 'Deposit & Trade Confirmed' : 'Position Opened',
-        { link: explorerUrl }
-      )
+    return this.root.depositTradeHelperStore.createTradeForPositionTx({
+      collateralAmount,
+      permit,
+      positionToken,
+      positionTokenAmountOut: this.longShortAmountBN,
+      recipient,
+    })
+  }
+
+  private handleAfterTransactionSuccess({
+    hash,
+    type,
+  }: {
+    hash: string
+    type: 'approval' | 'action'
+  }): void {
+    let message = 'Position Opened'
+
+    if (type === 'approval') {
+      message = 'Approved Tokens for Trade'
+    } else if (this.paymentToken.type === 'native') {
+      message = 'Deposit & Trade Confirmed'
     }
 
-    runInAction(() => {
-      this.openingTrade = false
-      // reset input amount if trade was successful
-      if (!error) this.reset()
+    toast.success(message, { link: this.root.web3Store.getBlockExplorerUrl(hash) })
+    this.reset()
+  }
+
+  private handleError({ error, hash }: { error: string; hash?: string }): void {
+    toast.error('Trade Failed', {
+      description: error,
+      link: hash ? this.root.web3Store.getBlockExplorerUrl(hash) : undefined,
     })
   }
 

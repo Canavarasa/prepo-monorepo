@@ -12,8 +12,8 @@ const OpenTradeButton: React.FC = () => {
     initialLoading,
     loading,
     disabled,
-    paymentToken,
     withinBounds,
+    transactionBundle: { actionLabel },
   } = openTradeStore
   const { connected, isNetworkSupported } = web3Store
   const { selectedMarket } = tradeStore
@@ -25,23 +25,17 @@ const OpenTradeButton: React.FC = () => {
 
     if (withinBounds === false) return 'Unprofitable Trade'
     if (depositPriceImpactTooHigh) return 'Insufficient wstETH Liquidity'
-
-    if (connected) {
-      if (insufficientBalance) return 'Insufficient Balance'
-    }
+    if (insufficientBalance) return 'Insufficient Balance'
 
     // during initial loading states, show only "spinner" and no text
     if (initialLoading) return ''
 
-    if (paymentToken.type === 'native') return 'Deposit And Trade'
-
-    return 'Trade'
+    return actionLabel
   }, [
-    connected,
+    actionLabel,
     depositPriceImpactTooHigh,
     initialLoading,
     insufficientBalance,
-    paymentToken.type,
     selectedMarket,
     withinBounds,
   ])
@@ -49,7 +43,7 @@ const OpenTradeButton: React.FC = () => {
   if (!connected || !isNetworkSupported) return <ConnectButton />
 
   const handleClick = (): void => {
-    openTradeStore.openTrade()
+    openTradeStore.transactionBundle.execute()
   }
 
   return (

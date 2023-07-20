@@ -1,6 +1,6 @@
 import { ContractCallContext } from 'ethereum-multicall'
 import { action, autorun, makeObservable, observable, onBecomeUnobserved, runInAction } from 'mobx'
-import { Contract, ContractFunction, BigNumber, UnsignedTransaction } from 'ethers'
+import { Contract, ContractFunction, BigNumber, UnsignedTransaction, ethers } from 'ethers'
 import { getContractAddress } from 'prepo-utils'
 import { RootStore } from './RootStore'
 import { isImportantError } from './utils/error-capturer-util'
@@ -17,6 +17,26 @@ type SendTransactionOptions = {
 } & UnsignedTransaction
 
 type GasOptions = { gasLimit?: BigNumber }
+
+export async function generateGasOptions(
+  signer: ethers.Signer,
+  unsignedTransaction: UnsignedTransaction
+): Promise<GasOptions> {
+  const options: GasOptions = {}
+
+  try {
+    const gasLimitEstimate = await signer.estimateGas({
+      ...unsignedTransaction,
+      type: 2,
+    })
+    options.gasLimit = gasLimitEstimate.mul(2)
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.warn('Gas estimation failed.')
+  }
+
+  return options
+}
 
 export class ContractStore<RootStoreType, SupportedContracts> {
   contractName: keyof SupportedContracts
@@ -118,27 +138,19 @@ export class ContractStore<RootStoreType, SupportedContracts> {
     return this.factory.connect(this.address, this.root.web3Store.signer)
   }
 
-  async generateGasOptions<T extends ContractFunction>(
+  generateGasOptions<T extends ContractFunction>(
     methodName: string,
     params: Parameters<T>,
     callerOptions: UnsignedTransaction = {}
   ): Promise<GasOptions> {
-    if (!this.contract) throw Error('contract not initialzied')
+    if (!this.contract) throw Error('contract not initialized')
+    if (!this.root.web3Store.signer) throw Error('wallet not connected')
 
-    const estimateOptions = { from: this.root.web3Store.signerState.address, ...callerOptions }
-    const options: GasOptions = {}
-
-    try {
-      const gasLimitEstimate = await this.contract.estimateGas[methodName](
-        ...params,
-        estimateOptions
-      )
-      options.gasLimit = gasLimitEstimate.mul(2)
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.warn('Gas estimation failed.')
-    }
-    return options
+    return generateGasOptions(this.root.web3Store.signer, {
+      data: this.contract.interface.encodeFunctionData(methodName, params),
+      to: this.contract.address,
+      ...callerOptions,
+    })
   }
 
   call<T extends ContractFunction>(

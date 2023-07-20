@@ -1,4 +1,4 @@
-import { ContractStore } from './ContractStore'
+import { ContractStore, generateGasOptions, } from './ContractStore'
 import { DynamicContractStore } from './DynamicContractStore'
 import { DYNAMIC_CONTRACT_ADDRESS } from './utils/constants'
 import { GraphStore } from './GraphStore'
@@ -14,6 +14,7 @@ export {
   ContractStore,
   DynamicContractStore,
   DYNAMIC_CONTRACT_ADDRESS,
+  generateGasOptions,
   GraphStore,
   LocalStorageStore,
   RootStore,

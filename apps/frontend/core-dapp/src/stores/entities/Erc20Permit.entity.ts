@@ -18,6 +18,10 @@ type Constructor = {
   factory?: Factory
 }
 
+export type SignedPermit = Pick<Signature, 'r' | 'v' | 's'> & {
+  deadline: number
+}
+
 export class Erc20PermitStore extends Erc20Store {
   constructor({ factory, root, symbolOverride, tokenName }: Constructor) {
     super({
@@ -87,7 +91,7 @@ export class Erc20PermitStore extends Erc20Store {
     )
   }
 
-  static readonly EMPTY_PERMIT = {
+  static readonly EMPTY_PERMIT: SignedPermit = {
     deadline: 0,
     v: 0,
     r: ethers.constants.HashZero,

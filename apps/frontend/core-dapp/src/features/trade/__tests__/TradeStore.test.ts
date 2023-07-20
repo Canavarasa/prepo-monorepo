@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { parseEther, parseUnits } from 'ethers/lib/utils'
 import { configure } from 'mobx'
-import { arbitrum } from '../../../lib/markets'
-import { MarketEntity } from '../../../stores/entities/MarketEntity'
 // eslint-disable-next-line jest/no-mocks-import
 import { poolMock } from '../../../__mocks__/test-mocks/pool.mock'
 
@@ -13,7 +11,6 @@ jest.mock('../../../stores/entities/MarketEntity')
 configure({ safeDescriptors: false })
 
 const { rootStore } = global
-const selectedMarket = new MarketEntity(rootStore, arbitrum)
 const amountToTrade = '100'
 const COLLATERAL_BALANCE = '2000'
 const COLLATERAL_DECIMALS = 18
@@ -82,7 +79,7 @@ describe.skip('TradeStore tests', () => {
     })
 
     it('should call UniswapRouter exactInput when opening a trade', () => {
-      rootStore.openTradeStore.openTrade()
+      rootStore.openTradeStore.transactionBundle.execute()
       expect(rootStore.uniswapRouterStore.exactInput).toHaveBeenCalledTimes(1)
     })
 

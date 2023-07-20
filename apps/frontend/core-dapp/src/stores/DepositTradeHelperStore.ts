@@ -6,24 +6,20 @@ import { formatEther } from 'ethers/lib/utils'
 import { makeObservable } from 'mobx'
 import { RootStore } from './RootStore'
 import { BalancerStore } from './BalancerStore'
-import { Erc20PermitStore } from './entities/Erc20Permit.entity'
+import { Erc20PermitStore, SignedPermit } from './entities/Erc20Permit.entity'
 import { SupportedContracts } from '../lib/contract.types'
 import { DepositTradeHelperAbi, DepositTradeHelperAbi__factory } from '../../generated/typechain'
+import { TxOutput, UnsignedTxOutput } from '../types/transaction.types'
 
 type TradeForCollateral = DepositTradeHelperAbi['functions']['tradeForCollateral']
-type TradeForPosition = DepositTradeHelperAbi['functions']['tradeForPosition']
 type WithdrawAndUnwrap =
   DepositTradeHelperAbi['functions']['withdrawAndUnwrap(address,uint256,(uint256,uint8,bytes32,bytes32),(uint256,uint256))']
 type WrapAndDeposit =
   DepositTradeHelperAbi['functions']['wrapAndDeposit(address,(uint256,uint256))']
-type WrapAndDepositAndTrade =
-  DepositTradeHelperAbi['functions']['wrapAndDepositAndTrade(address,(uint256,uint256),(uint256,uint8,bytes32,bytes32),(address,uint256,uint256,uint160))']
 
 const getPermitDeadlineFromDate = addDays(1)
-const getPermitDeadline = (): number =>
+export const getPermitDeadline = (): number =>
   Math.floor(getPermitDeadlineFromDate(Date.now()).getTime() / 1000)
-
-type TxOutput = { success: boolean; error?: string; hash?: string }
 
 export class DepositTradeHelperStore extends ContractStore<RootStore, SupportedContracts> {
   constructor(root: RootStore) {
@@ -95,68 +91,46 @@ export class DepositTradeHelperStore extends ContractStore<RootStore, SupportedC
     }
   }
 
-  async tradeForPosition({
+  createTradeForPositionTx({
     collateralAmount,
-    needsPermit,
+    permit,
     positionToken,
     positionTokenAmountOut,
     recipient,
   }: {
     collateralAmount: BigNumber
-    needsPermit: boolean
+    permit: SignedPermit
     positionToken: string
     positionTokenAmountOut: BigNumber
     recipient: string
-  }): Promise<TxOutput> {
-    const { address: depositTradeHelperAddress } = this
-
-    if (depositTradeHelperAddress === undefined)
+  }): UnsignedTxOutput {
+    if (this.address === undefined || this.contract === undefined)
       return {
         success: false,
         error: 'Something went wrong, please try again later.',
       }
 
-    let hash: string | undefined
-    try {
-      const deadline = getPermitDeadline()
-      let permit = Erc20PermitStore.EMPTY_PERMIT
+    const deadline = BalancerStore.getTradeDeadline()
 
-      if (needsPermit) {
-        const collateralPermit = await this.root.collateralStore.getPermitSignature(
-          depositTradeHelperAddress,
-          ethers.constants.MaxUint256,
-          deadline
-        )
+    const data = this.contract.interface.encodeFunctionData('tradeForPosition', [
+      recipient,
+      collateralAmount,
+      permit,
+      {
+        amountOutMinimum:
+          this.root.advancedSettingsStore.getAmountAfterSlippageForTrades(positionTokenAmountOut),
+        deadline,
+        positionToken,
+        sqrtPriceLimitX96: BigNumber.from(0),
+      },
+    ])
 
-        if (typeof collateralPermit === 'string') {
-          throw new Error('Something went wrong. Please try again later.')
-        }
-
-        permit = {
-          ...collateralPermit,
-          deadline,
-        }
-      }
-
-      const tx = await this.sendTransaction<TradeForPosition>('tradeForPosition', [
-        recipient,
-        collateralAmount,
-        permit,
-        {
-          amountOutMinimum:
-            this.root.advancedSettingsStore.getAmountAfterSlippageForTrades(positionTokenAmountOut),
-          deadline,
-          positionToken,
-          sqrtPriceLimitX96: BigNumber.from(0),
-        },
-      ])
-
-      hash = tx.hash
-      await tx.wait()
-
-      return { success: true, hash }
-    } catch (e) {
-      return { success: false, error: makeError(e).message, hash }
+    return {
+      success: true,
+      tx: {
+        data,
+        to: this.address,
+      },
     }
   }
 
@@ -207,54 +181,32 @@ export class DepositTradeHelperStore extends ContractStore<RootStore, SupportedC
     }
   }
 
-  async wrapAndDepositAndTrade({
+  createWrapAndDepositAndTradeTx({
     amountInEth,
     expectedAmountInPositionToken,
     expectedIntermediateAmountInWstEth,
-    needsPermit,
+    permit,
     positionToken,
     recipient,
   }: {
     amountInEth: BigNumber
     expectedAmountInPositionToken: BigNumber
     expectedIntermediateAmountInWstEth: BigNumber
-    needsPermit: boolean
+    permit: SignedPermit
     positionToken: string
     recipient: string
-  }): Promise<TxOutput> {
-    if (this.address === undefined) {
+  }): UnsignedTxOutput {
+    if (this.address === undefined || this.contract === undefined) {
       return {
         success: false,
         error: 'Something went wrong. Please try again later.',
       }
     }
 
-    let hash: string | undefined
-
     try {
-      const tradeDeadline = BalancerStore.getTradeDeadline()
-      const permitDeadline = getPermitDeadline()
+      const deadline = BalancerStore.getTradeDeadline()
 
-      let permit = Erc20PermitStore.EMPTY_PERMIT
-
-      if (needsPermit) {
-        const collateralPermit = await this.root.collateralStore.getPermitSignature(
-          this.address,
-          ethers.constants.MaxUint256,
-          permitDeadline
-        )
-
-        if (typeof collateralPermit === 'string') {
-          return { success: false, error: collateralPermit }
-        }
-
-        permit = {
-          ...collateralPermit,
-          deadline: permitDeadline,
-        }
-      }
-
-      const tx = await this.sendTransaction<WrapAndDepositAndTrade>(
+      const data = this.contract.interface.encodeFunctionData(
         'wrapAndDepositAndTrade(address,(uint256,uint256),(uint256,uint8,bytes32,bytes32),(address,uint256,uint256,uint160))',
         [
           recipient,
@@ -262,27 +214,30 @@ export class DepositTradeHelperStore extends ContractStore<RootStore, SupportedC
             amountOutMinimum: this.root.advancedSettingsStore.getAmountAfterSlippageForDeposits(
               expectedIntermediateAmountInWstEth
             ),
-            deadline: tradeDeadline,
+            deadline,
           },
           permit,
           {
             amountOutMinimum: this.root.advancedSettingsStore.getAmountAfterSlippageForTrades(
               expectedAmountInPositionToken
             ),
-            deadline: tradeDeadline,
+            deadline,
             positionToken,
             sqrtPriceLimitX96: BigNumber.from(0),
           },
-        ],
-        {
-          value: amountInEth,
-        }
+        ]
       )
-      hash = tx.hash
-      await tx.wait()
-      return { success: true, hash }
+
+      return {
+        success: true,
+        tx: {
+          data,
+          to: this.address,
+          value: amountInEth,
+        },
+      }
     } catch (e) {
-      return { success: false, error: makeError(e).message, hash }
+      return { success: false, error: makeError(e).message }
     }
   }
 
