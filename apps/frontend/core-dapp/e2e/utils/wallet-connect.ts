@@ -3,7 +3,7 @@ import { Web3Wallet, Web3WalletTypes } from '@walletconnect/web3wallet'
 import { buildApprovedNamespaces, getSdkError } from '@walletconnect/utils'
 import { BigNumber, ethers } from 'ethers'
 import { NETWORKS, WALLETCONNECT_PROJECT_ID } from 'prepo-constants'
-import { deferred } from './deferred'
+import { deferred } from '../../src/utils/deferred'
 import { EventEmitter } from 'events'
 
 const arbitrumChainId = NETWORKS.arbitrumOne.chainId

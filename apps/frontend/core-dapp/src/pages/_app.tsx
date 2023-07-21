@@ -13,6 +13,7 @@ import { LightWeightChartProvider } from '../components/charts'
 import '../styles/default.css'
 import '../styles/scrollbar.css'
 import TermsWall from '../features/terms/TermsWall'
+import Intercom from '../components/Intercom'
 import { TestIds } from '../components/TestId'
 import VersionsWall from '../components/VersionsWall'
 import RegionWall from '../components/RegionWall'
@@ -59,6 +60,7 @@ const App: AppWithInitialProps = ({ Component, pageProps }) => {
             <Walls>
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
               <Component {...pageProps} />
+              <Intercom />
             </Walls>
           </Layout>
         </AppBootstrap>
