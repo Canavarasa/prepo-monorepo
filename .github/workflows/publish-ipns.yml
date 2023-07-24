@@ -25,8 +25,13 @@ jobs:
           IPNS_PUBLISHER_IP_ADDRESS: ${{ secrets.IPNS_PUBLISHER_IP_ADDRESS }}
           IPNS_PUBLISHER_SSH_KEY: ${{ secrets.IPNS_PUBLISHER_SSH_KEY }}
         run: |
-          ssh -o StrictHostKeyChecking=accept-new "root@$IPNS_PUBLISHER_IP_ADDRESS" -- podman exec ipfs_host \
-            ipfs name publish "$CID" \
+          echo "$IPNS_PUBLISHER_SSH_KEY" > ssh.key
+          
+          ssh \
+            -i ssh.key \
+            -o StrictHostKeyChecking=accept-new \
+            "root@$IPNS_PUBLISHER_IP_ADDRESS" \
+            -- podman exec ipfs_host ipfs name publish "$CID" \
               --resolve=false \
               --key prepo \
               --lifetime 24h \
