@@ -26,6 +26,7 @@ jobs:
           IPNS_PUBLISHER_SSH_KEY: ${{ secrets.IPNS_PUBLISHER_SSH_KEY }}
         run: |
           echo "$IPNS_PUBLISHER_SSH_KEY" > ssh.key
+          chmod 600 ssh.key
           
           ssh \
             -i ssh.key \
