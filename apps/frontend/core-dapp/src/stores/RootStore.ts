@@ -104,7 +104,7 @@ export class RootStore extends PRootStore<SupportedContracts> {
       console.log(`build: ${process.env.NEXT_PUBLIC_PREPO_BUILD_ID ?? '-'}`)
       console.log(`build time: ${process.env.NEXT_PUBLIC_PREPO_BUILD_TIME ?? '-'}`)
       // TODO this is just to force redeployment - remove on next PR
-      console.log('Deployed from IPFS node')
+      console.log('Deployed from IPFS node.')
       /* eslint-enable no-console */
     }
 
