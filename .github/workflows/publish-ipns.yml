@@ -15,9 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: IPFS
 
-    container:
-      image: docker.io/ipfs/kubo:v0.15.0
-
     timeout-minutes: 10
 
     steps:
@@ -25,30 +22,18 @@ jobs:
         id: ipns_update
         env:
           CID: ${{ inputs.cid }}
-          IPNS_KEY_BASE64: ${{ secrets.IPNS_KEY_BASE64 }}
+          IPNS_PUBLISHER_IP_ADDRESS: ${{ secrets.IPNS_PUBLISHER_IP_ADDRESS }}
+          IPNS_PUBLISHER_SSH_KEY: ${{ secrets.IPNS_PUBLISHER_SSH_KEY }}
         run: |
-          ipfs init --profile=lowpower
-          ipfs config --json Ipns.UsePubsub true
+          ssh "root@$IPNS_PUBLISHER_IP_ADDRESS" -- podman exec ipfs_host \
+            ipfs name publish "$CID" \
+              --resolve=false \
+              --key prepo \
+              --lifetime 24h \
+              --ttl 60s \
+              --quieter > ipns_address
 
-          ipfs daemon &
-          daemon_pid="$!"
-          sleep 30
-
-          cat > /tmp/key.pem << EOF
-          -----BEGIN PRIVATE KEY-----
-          $IPNS_KEY_BASE64
-          -----END PRIVATE KEY-----
-          EOF
-          ipns_address="$(ipfs key import prepo -f pem-pkcs8-cleartext /tmp/key.pem)"
-
-          ipfs name publish "$CID" \
-            --resolve=false \
-            --key prepo \
-            --lifetime 1440h \
-            --ttl 60s
-
-          kill -INT "$daemon_pid"
-          echo "ipns_address=$ipns_address" >> "$GITHUB_OUTPUT"
+          echo "ipns_address=$(cat ipns_address)" >> "$GITHUB_OUTPUT"
 
     outputs:
       ipns_address: ${{ steps.ipns_update.outputs.ipns_address }}
