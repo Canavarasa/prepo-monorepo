@@ -17,10 +17,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Use NodeJS 16
-        uses: actions/setup-node@v2
+      - name: Use NodeJS 20
+        uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version-file: .nvmrc
 
       - name: Get Build ID
         id: request_build_id
@@ -30,7 +30,7 @@ jobs:
           IPNS_KEY_BASE64: ${{ secrets.IPNS_KEY_BASE64 }}
         run: |
           build_cert="$(curl -sf https://$CID.ipfs.cf-ipfs.com/BUILD_CERTIFICATION.json)"
-          build_id="$(yarn -s decode-build-certification $build_cert)"
+          build_id="$(yarn decode-build-certification $build_cert)"
           echo "build_id=$build_id" >> "$GITHUB_OUTPUT"
 
     outputs:

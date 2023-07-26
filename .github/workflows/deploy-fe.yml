@@ -28,11 +28,11 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Use NodeJS 16
+      - name: Use NodeJS 20
         if: steps.ignore.outcome != 'success'
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version-file: .nvmrc
 
       - name: Setup npm
         if: steps.ignore.outcome != 'success'
@@ -72,7 +72,7 @@ jobs:
         env:
           BUILD_ID: ${{ github.sha }}
           IPNS_KEY_BASE64: ${{ secrets.IPNS_KEY_BASE64 }}
-        run: yarn -s certify-fe > out/BUILD_CERTIFICATION.json
+        run: yarn certify-fe > out/BUILD_CERTIFICATION.json
 
       - name: Measure byte size
         id: measure_size
@@ -92,7 +92,7 @@ jobs:
           IPFS_DEPLOY_INFURA__PROJECT_ID: ${{ secrets.IPFS_DEPLOY_INFURA__PROJECT_ID }}
           IPFS_DEPLOY_INFURA__PROJECT_SECRET: ${{ secrets.IPFS_DEPLOY_INFURA__PROJECT_SECRET }}
         run: |
-          cid="$(yarn -s ipfs-deploy -q -u infura -p infura out)"
+          cid="$(yarn ipfs-deploy -q -u infura -p infura out)"
           cid="$(node -e "console.log(require('multiformats/cid').CID.parse('$cid').toV1().toString())")"
           echo "cid=$cid" >> "$GITHUB_OUTPUT"
 

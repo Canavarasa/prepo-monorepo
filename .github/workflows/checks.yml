@@ -20,10 +20,10 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
-      - name: 'Use NodeJS 16'
-        uses: actions/setup-node@v2
+      - name: 'Use NodeJS 20'
+        uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version-file: .nvmrc
 
       - name: 'Setup npm'
         run: |
