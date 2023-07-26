@@ -16,6 +16,7 @@ import TermsWall from '../features/terms/TermsWall'
 import Intercom from '../components/Intercom'
 import { TestIds } from '../components/TestId'
 import VersionsWall from '../components/VersionsWall'
+import { Redirect } from '../components/Redirect'
 import RegionWall from '../components/RegionWall'
 import { compose } from '../utils/compose'
 
@@ -51,6 +52,9 @@ const App: AppWithInitialProps = ({ Component, pageProps }) => {
   // prepared to work with static site generation - disable it entirely for now.
   if (!client) return null
 
+  if (process.env.NEXT_PUBLIC_VERCEL_REDIRECT_TO)
+    return <Redirect to={process.env.NEXT_PUBLIC_VERCEL_REDIRECT_TO} />
+
   return (
     <RootStoreProvider>
       <LightWeightChartProvider>
@@ -67,19 +71,6 @@ const App: AppWithInitialProps = ({ Component, pageProps }) => {
       </LightWeightChartProvider>
     </RootStoreProvider>
   )
-}
-
-App.getInitialProps = ({ ctx }) => {
-  // ctx.res is not writable during pre-rendering, so we have to check for the
-  // presence of `writeHead`
-  if (ctx.res && 'writeHead' in ctx.res && process.env.NEXT_PUBLIC_VERCEL_REDIRECT_TO) {
-    ctx.res.writeHead(307, {
-      Location: process.env.NEXT_PUBLIC_VERCEL_REDIRECT_TO,
-    })
-    ctx.res.end()
-  }
-
-  return Promise.resolve({ pageProps: {} })
 }
 
 export default App
