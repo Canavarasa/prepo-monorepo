@@ -4,13 +4,14 @@ import { I18nProvider } from '@lingui/react'
 import { i18n } from '@lingui/core'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { DEFAULT_LANGUAGE } from 'prepo-constants'
 import { RootStoreProvider } from '../context/RootStoreProvider'
 import AppBootstrap from '../components/AppBootstrap'
 import Layout from '../components/layout'
 
 import 'antd/dist/antd.css'
 import '../styles/default.css'
+
+const DEFAULT_LANGUAGE = 'en'
 
 // mobx config
 configure({

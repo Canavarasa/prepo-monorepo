@@ -1,6 +1,7 @@
+#!/usr/bin/env bash
 
 # Generate uniswap-v3 models
-npx mst-gql\
+yarn mst-gql\
   --force\
   --noReact\
   --format ts\

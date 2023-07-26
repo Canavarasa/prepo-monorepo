@@ -43,8 +43,5 @@
     "vite-plugin-fonts": "0.3.0",
     "vite-plugin-imp": "2.1.7",
     "vite-tsconfig-paths": "3.4.1"
-  },
-  "resolutions": {
-    "@types/react": "17.0.45"
   }
 }

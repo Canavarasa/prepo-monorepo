@@ -2,7 +2,9 @@
   "name": "prepo-shared-contracts",
   "version": "0.0.0",
   "description": "prePO Shared smart contracts",
-  "files": ["contracts/*.sol"],
+  "files": [
+    "contracts/*.sol"
+  ],
   "scripts": {
     "clean": "rm -rf './frontend/src/hardhat' && npx hardhat clean",
     "sl": "yarn prettier --write 'contracts/**/*.sol'",
@@ -15,7 +17,7 @@
     "pret": "yarn c && yarn l",
     "t": "npx hardhat test",
     "test:ci": "yarn c && npx hardhat test",
-    "typechain": "TS_NODE_TRANSPILE_ONLY=1 npx hardhat typechain", 
+    "typechain": "TS_NODE_TRANSPILE_ONLY=1 npx hardhat typechain",
     "pret:coverage": "yarn c && yarn l",
     "t:coverage": "npx hardhat coverage",
     "lint": "eslint . --max-warnings 0 --ext ts,tsx",
@@ -38,7 +40,7 @@
   },
   "devDependencies": {
     "config": "*",
-    "tsconfig": "*",
-    "solhint-config-prepo": "*"
+    "solhint-config-prepo": "*",
+    "tsconfig": "*"
   }
 }

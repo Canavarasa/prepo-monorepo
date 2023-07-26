@@ -6,7 +6,7 @@
     "codegen": "yarn generate",
     "generate": "yarn generate-types && yarn mst-gql:generate",
     "generate-types": "typechain --target=ethers-v5 'abi/*.json' --out-dir generated/typechain",
-    "dev": "npx next",
+    "dev": "next",
     "build": "next build",
     "export": "next-sitemap && next export && rm public/robots.txt && rm public/sitemap*.xml && echo \"$(date +%s000\n)\" > out/BUILD_TIME.json",
     "test": "jest -w 1",
@@ -85,8 +85,5 @@
   "engines": {
     "node": ">=16.0.0",
     "yarn": "1.x"
-  },
-  "resolutions": {
-    "@types/react": "17.0.45"
   }
 }

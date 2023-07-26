@@ -43,7 +43,7 @@ jobs:
       - name: Install Dependencies
         if: steps.ignore.outcome != 'success'
         run: |
-          yarn install --frozen-lockfile
+          yarn install --immutable
 
       - name: Restore Next.js cache
         if: steps.ignore.outcome != 'success'

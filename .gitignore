@@ -101,3 +101,13 @@ apps/subgraphs/boilerplate/src/types
 ## Ignore input and output folders for tasks
 **/tasks/input
 **/tasks/output
+
+# --------- yarn ---------
+
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "description": "prePO Constants",
   "main": "src/index.ts",
-  "files": ["src/index.ts", "src/types.ts"],
+  "files": [
+    "src/index.ts",
+    "src/types.ts"
+  ],
   "scripts": {
     "build": "tsc",
     "build:watch": "yarn build --watch"

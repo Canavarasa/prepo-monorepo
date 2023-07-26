@@ -19,10 +19,9 @@
     "mst-gql:generate": "./internals/mst-gql-generate.bash"
   },
   "dependencies": {
-    "@lingui/react": "3.14.0",
     "@lingui/core": "3.14.0",
     "@lingui/macro": "3.14.0",
-    "@sentry/nextjs": "6.19.6",
+    "@lingui/react": "3.14.0",
     "antd": "4.21.6",
     "clone-deep": "4.0.1",
     "configcat-js-ssr": "3.10.0",
@@ -60,8 +59,5 @@
     "next-transpile-modules": "9.0.0",
     "tsconfig": "*",
     "typechain": "8.0.0"
-  },
-  "resolutions": {
-    "@types/react": "17.0.45"
   }
 }

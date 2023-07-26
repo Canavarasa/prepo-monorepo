@@ -1,11 +1,13 @@
+#!/usr/bin/env bash
+
 # Generate uniswap-v3 models
-npx mst-gql\
+yarn mst-gql\
   --force\
   --noReact\
   --format ts\
   --outDir generated/mst-gql/core-dapp\
   src/graphql/core-dapp.graphql &
-npx mst-gql\
+yarn mst-gql\
   --force\
   --noReact\
   --format ts\
