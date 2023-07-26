@@ -25,7 +25,7 @@ export default defineConfig({
   retries: 0,
   testDir: './e2e',
   use: {
-    baseURL: process.env.PLAYWRIGHT_BASE_URL ?? 'https://app.prepo.io/',
+    baseURL: process.env.PLAYWRIGHT_BASE_URL ?? 'https://prepo.eth.limo/',
     trace: process.env.CI ? 'on-first-retry' : 'on',
   },
   workers: process.env.CI ? 1 : undefined,

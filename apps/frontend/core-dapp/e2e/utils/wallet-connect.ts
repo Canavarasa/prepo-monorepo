@@ -28,7 +28,7 @@ export async function connectMockWallet({
     metadata: {
       name: 'Mock Wallet',
       description: 'Mock Wallet for testing purposes only.',
-      url: 'app.prepo.io',
+      url: 'prepo.eth.limo',
       icons: [],
     },
   })

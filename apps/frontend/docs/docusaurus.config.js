@@ -81,7 +81,7 @@ module.exports = {
             className: 'navbar-item',
           },
           {
-            href: 'https://app.prepo.io',
+            href: 'https://prepo.eth.limo',
             position: 'left',
             label: 'App ↗',
             className: 'navbar-item',

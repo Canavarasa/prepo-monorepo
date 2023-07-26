@@ -70,7 +70,7 @@ const TermsPage: React.FC = () => {
           <li>
             prePO is offered for use “as is” and without any guarantees regarding security. The
             protocol is made up of upgradeable smart contracts and may be accessed through a variety
-            of user interfaces, including app.prepo.io.
+            of user interfaces, including app.prepo.io and prepo.eth.limo.
           </li>
           <li>
             You have done your own research on prePO and the PPO token and understand and assume the

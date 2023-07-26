@@ -3,7 +3,7 @@ export const keyLinks = {
   title: 'Key Links',
   items: [
     { name: 'Website', link: 'https://prepo.io/' },
-    { name: 'App', link: 'https://app.prepo.io' },
+    { name: 'App', link: 'https://prepo.eth.limo' },
     { name: 'Twitter', link: 'https://twitter.com/prepo_io' },
     { name: 'Discord', link: 'https://discord.gg/prePO' },
     { name: 'Blog', link: 'https://medium.com/prepo' },

@@ -11,7 +11,7 @@ export const DEFAULT_LANGUAGE = 'en-us'
 export const APP_NAME = 'prePO'
 
 export enum ROUTES {
-  APP = 'https://app.prepo.io',
+  APP = 'https://prepo.eth.limo',
   BLOG = 'https://medium.com/prepo',
   DOCS = 'https://docs.prepo.io',
   JOBS = 'https://url.prepo.io/jobs',

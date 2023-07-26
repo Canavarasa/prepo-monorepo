@@ -8,12 +8,7 @@ const getIsOutdated = (): boolean => {
 
   const hostnameLowercase = hostname.toLowerCase()
   // versions on official links are never outdated
-  if (
-    hostnameLowercase.includes('.ipns.') ||
-    hostnameLowercase.includes('prepo.eth') ||
-    hostnameLowercase.toLowerCase() === 'app.prepo.io'
-  )
-    return false
+  if (hostnameLowercase.includes('.ipns.') || hostnameLowercase.includes('prepo.eth')) return false
 
   // only time there won't be a NEXT_PUBLIC_PREPO_BUILD_TIME is when running locally
   const now = new Date().getTime()

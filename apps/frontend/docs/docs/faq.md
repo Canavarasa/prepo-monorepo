@@ -90,7 +90,7 @@ Other ways to earn PPO are also being explored.
 
 ### How can I see my PPO balance?
 
-Your PPO balance is viewable within the app under the [Portfolio](https://app.prepo.io/portfolio) tab.
+Your PPO balance is viewable within the app under the [Portfolio](https://prepo.eth.limo/portfolio) tab.
 
 ### Why is PPO starting as non-transferable and non-tradable?
 
